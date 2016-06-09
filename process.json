@@ -1,0 +1,19 @@
+{
+  "apps" : [{
+    "name" : "express_p1",
+    "script" : "index.js",
+    "watch" : true,
+    "ignore_watch" : ["node_modules", "dev", "public", ".git"],
+    "env": {
+      "NODE_ENV": "development",
+    }/*,
+    "env_production" : {
+       "NODE_ENV": "production"
+    }*/
+  }/*,{
+    "name"       : "api-app",
+    "script"     : "api.js",
+    "instances"  : 4,
+    "exec_mode"  : "cluster"
+  }*/]
+}

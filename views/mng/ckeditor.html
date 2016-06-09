@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ./head.html %>
+    <link href="<%=vpath%>/css/mng/users.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="wrapper">
+        <% include ./nav.html %>
+
+        <!-- Page Content -->
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">Users</h1>
+                    </div>
+
+
+                    <!-- /.row -->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Users 列表
+                                </div>
+                                <!-- /.panel-heading -->
+                                <div class="panel-body">
+                                <form method="post">
+                                    <textarea name="editor1" id="editor1" rows="10" cols="80">
+                                        This is my textarea to be replaced with CKEditor.
+                                    </textarea>
+                                    <button type="submit" class="btn btn-success btn-block">Send</button>
+                                </form>
+                                </div>
+                                <!-- /.panel-body -->
+                            </div>
+                            <!-- /.panel -->
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+    <% include ./pagealert.html %>
+</body>
+</html>
+<script src="<%=vpath%>/js/ckeditor/ckeditor.js" ></script>
+<script>
+CKEDITOR.replace("editor1", {
+    "enterMode" : CKEDITOR.ENTER_BR,
+    "toolbarGroups" : [
+        { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+        { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+        { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+        { name: 'forms', groups: [ 'forms' ] },
+        { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+        { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+        '/',
+        { name: 'links', groups: [ 'links' ] },
+        { name: 'insert', groups: [ 'insert' ] },
+        { name: 'styles', groups: [ 'styles' ] },
+        { name: 'colors', groups: [ 'colors' ] },
+        { name: 'tools', groups: [ 'tools' ] },
+        { name: 'others', groups: [ 'others' ] },
+        { name: 'about', groups: [ 'about' ] }
+    ],
+    "removeButtons" : 'Save,Print,Templates,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Language,Image,Flash,Table,HorizontalRule,Smiley,SpecialChar,PageBreak,Iframe,Font,About,Scayt,BidiRtl,BidiLtr,Cut,Copy,Paste,PasteText,PasteFromWord'
+});
+</script>

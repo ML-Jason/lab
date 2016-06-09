@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <% include ./head.html %>
+  <style>
+  #needs {
+      color: red;
+      font-weight: bold;
+      font-size: 16px;
+  }
+  </style>
+  
+</head>
+
+<body>
+  <div id="wrapper">
+
+      <% include ./nav.html %>
+
+      <!-- Page Content -->
+      <div id="page-wrapper">
+          <div class="container-fluid">
+              <div class="row">
+                  <div class="col-sm-12">
+                      <h1 class="page-header">使用者管理</h1>
+                  </div>
+
+                  <!-- /.row -->
+                  <div class="row">
+                      <div class="col-sm-12">
+                          <div class="panel panel-default">
+                              <div class="panel-heading">
+                                  <% if (mode == 'add') { %>新增User<%
+                                  } else {
+                                  %>修改資料<%
+                                  }
+                                  %>
+                              </div>
+                              <!-- panel-body -->
+                              <div class="panel-body">
+                                  <form class="form-horizontal" id="addform" method="post">
+                                      <input type="hidden" id="etype" value="<%=mode%>" />
+                                      <div class="form-group">
+                                          <label for="username" class="col-sm-2 control-label"><span id="needs"> * </span>UserName</label>
+                                          <div class="col-sm-10">
+                                              <% if (mode == 'add') {%>
+                                              <input type="text" class="form-control" id="username" name="username" placeholder="UserName" value="<%= username%>">
+                                              <%
+                                              } else {
+                                              %><label class="control-label"><%= username %></label><%
+                                              }
+                                              %>
+                                              <p class="help-block">6-20個字元的英數字母混合</p>
+                                          </div>
+                                      </div>
+                                      <div class="form-group">
+                                          <label for="nickname" class="col-sm-2 control-label">NickName</label>
+                                          <div class="col-sm-10">
+                                              <input type="text" class="form-control" id="nickname" name="nickname" placeholder="NickName" value="<%= nickname%>">
+                                          </div>
+                                      </div>
+                                      <div class="form-group">
+                                          <label for="password" class="col-sm-2 control-label">Password</label>
+                                          <div class="col-sm-10">
+                                              <input type="password" class="form-control" id="password" name="password" placeholder="">
+                                              <p class="help-block">6-20個字元的英數字母混合</p>
+                                          </div>
+                                      </div>
+                                      <div class="col-sm-12">
+                                          <div class="col-sm-2 col-xs-0"></div>
+                                          <div class="col-sm-4 col-xs-6">
+                                              <button type="submit" class="btn btn-success btn-block">Send</button>
+                                          </div>
+                                          <div class="col-sm-4 col-xs-6">
+                                              <button type="button" class="btn btn-default btn-block" id="clear_btn">Clear</button>
+                                          </div>
+                                      </div>
+                                  </form>
+                              </div>
+                              <!-- panel-body -->
+                          </div>
+                      </div>
+                  </div>
+                  <!-- /.row -->
+              </div>
+          </div>
+          <!-- /.container-fluid -->
+      </div>
+      <!-- /#page-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->
+
+  <% include ./pagealert.html %>
+</body>
+
+</html>
+<script src="<%=vpath%>/js/validators.js"></script>
+<script>
+$(onReady);
+function onReady() {
+  $("#addform").on("submit", onSubmit);
+  $("#clear_btn").on("click", onClear);
+};
+function onSubmit(e) {
+  e.preventDefault();
+
+  var uname = $("#username").val() || "";
+  uname = validator.trim(uname);
+  var pwd = validator.trim($("#password").val());
+  var nname = validator.trim($("#nickname").val());
+  if ($("#etype").val() == "add") {
+      if (! validator.isLoginId(uname) || !validator.isLength(uname, {min:6, max:20})) {
+          pageAlert.showError("無效的帳號");
+          return;
+      }
+  }
+  if (! nname) {
+      pageAlert.showError("請填寫NickName");
+      return;
+  }
+  if ($("#etype").val() == "add" || pwd != "") {
+      if (! validator.isPassword(pwd) || !validator.isLength(pwd,{min:6, max:20})) {
+          pageAlert.showError("無效的密碼");
+          return;
+      }
+  }
+  $("#addform").off("submit");
+  $("#addform").submit();
+}
+function onClear() {
+  if ($("#etype").val() == "add")
+      $("#username").val("");
+  $("#nickname").val("");
+  $("#password").val("");
+}
+</script>

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Socket Client</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- MetisMenu CSS -->
+    <link href="css/metisMenu.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/sb-admin-2.css" rel="stylesheet">
+    <!-- Custom Fonts -->
+    <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+    	.msg_panel {
+    		margin-top: 20px;
+    	}
+    	.cons {
+    		bottom: 0;
+    		position: absolute;
+    		margin-bottom: 0;
+    	}
+    	.form-group {
+    		margin-bottom: 5px;
+    	}
+        #messages, #rooms {
+            overflow-x:hidden;
+            overflow-y:auto;
+        }
+        .room_unit {
+            cursor: pointer;
+        }
+        .common_msg_me {
+            text-align: right;
+            position: relative;
+        }
+        .private_msg_me {
+            text-align: right;
+            background-color: #F3FCF8
+        }
+        .common_msg_other {
+        }
+        .private_msg_other {
+            background-color: #F3FCF8
+        }
+        .userstatus_msg {
+            text-align: center;
+            color: gray;
+            font-weight: bold;
+        }
+        .sys_msg {
+            text-align: center;
+            background-color: #FAD479;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <div class="page-wrapper">
+            <div class="container-fluid col-xs-8">
+                <div class="panel panel-default msg_panel">
+                    <div class="panel-heading">
+                        Message Panel
+                    </div>
+                    <div class="panel-body" id="messages">
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid col-xs-4">
+                <div class="panel panel-default msg_panel">
+                    <div class="panel-heading">
+                        Room List
+                    </div>
+                    <div class="panel-body" id="rooms">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-8 cons">
+            	<form role="form" class="form-horizontal" id="msg_form">
+                    <div class="form-group row">
+                        <label class="col-md-1 control-label" for="roomInput">Room</label>
+                        <div class="col-md-2">
+                            <input class="form-control" id="roomInput">
+                        </div>
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-primary" id="join_btn">Join</button>
+                        </div>
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-primary" id="leave_btn">Leave</button>
+                        </div>
+                        <label class="col-md-2 control-label">Speak To</label>
+                        <div class="col-md-4">
+                            <select class="form-control" id="talkto">
+                            <!--        <option>1</option>
+                                    <option>5</option>-->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-1 control-label">Message</label>
+                        <div class="col-md-9">
+                            <input class="form-control" id="messageInput">
+                        </div>
+                        <div class="col-md-1">
+                            <button type="submit" id="send_btn" class="btn btn-primary">Send</button>
+                        </div>
+                    </div>
+	            </form>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <!-- jQuery -->
+    <script src="js/jquery-1.12.1.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- Metis Menu Plugin JavaScript-->
+    <script src="js/metisMenu.min.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="js/sb-admin-2.js"></script>
+</body>
+</html>
+<script src="js/socket.io.js"></script>
+<script>
+$(onReady);
+
+var _nowRoom = '';
+var _defaultRoom = 'Lobby';
+var _uname = 'tester_'+Math.round(Math.random()*1000);
+function onReady() {
+	$(window).on('resize', onResize);
+    onResize();
+
+    $("#select talkto").remove();
+
+    $("#msg_form").on("submit", onFormSubmit);
+    $("#leave_btn").on("click", function() {
+        leaveRoom();
+    });
+    $("#send_btn").on('click', function(e) {
+        onFormSubmit(e);
+    });
+    $("#join_btn").on('click', function(e) {
+        joinRoom($('#roomInput').val());
+    });
+}
+function onResize() {
+    $(".wrapper").css({
+        "height":$(window).height()
+    });
+    $("#messages").css({
+        "height":$(window).height() - 165
+    });
+    $("#rooms").css({
+        "height":$(window).height()/2 - 150
+    });
+}
+var _url = "http://localhost:3000";
+var _socket = io(_url);
+//var _socket = io(_url, { path: '/jason/socket'});
+_socket.on("connect", function() {
+    var _room = _nowRoom;
+    if (_room == '') _room = _defaultRoom;
+   	console.log("socket connected");
+    console.log('_nowRoom : ' + _room);
+    _socket.emit('_request_join', {
+            'uname' : _uname,
+            'room' : _room
+        }, function(data) {
+            if (data.msg == 'accept') {
+                _socket.id = data.id;
+                joinRoom(_room);
+                updateRooms();
+            } else {
+                alert('request reject');
+                _socket.disconnect();
+            }
+        });
+});
+_socket.on('_user_join', function(data) {
+    var _str = '<div class="userstatus_msg">' + data.uname + ' join the room</div>';
+    attachMsg(_str);
+    $("#talkto").append($("<option></option>").attr("value", data.id).text(data.uname));
+});
+_socket.on('_user_leave', function(data) {
+    var _str = '<div class="userstatus_msg">' + data.uname + ' leave the room</div>';
+    attachMsg(_str);
+    $("#talkto option").filter("[value='"+data.id+"']").remove();
+});
+_socket.on('_user_disconnect', function(data) {
+    var _str = '<div class="userstatus_msg">' + data.uname + ' disconnected</div>';
+    attachMsg(_str);
+    $("#talkto option").filter("[value='"+data.id+"']").remove();
+});
+_socket.on('_roomlist_change', function() {
+    updateRooms();
+});
+_socket.on('msg', function(msg, data) {
+    var from = data.uname;
+    var _str = '<div class="common_msg_other"><b>' + from + ' : </b>' + msg + '</div>';
+    attachMsg(_str);
+});
+_socket.on('_toall', function(msg, data) {
+    var from = data.uname;
+    var _str = '<div class="common_msg_other"><b>broadcast msg -' + from + ' : </b>' + msg + '</div>';
+    attachMsg(_str);
+});
+_socket.on('_sys', function(msg) {
+    console.log('on _sys');
+    var _str = '<div class="sys_msg">System Message :' + msg + '</div>';
+    attachMsg(_str);
+});
+_socket.on('_onlyto', function(msg,data) {
+    var from = data.uname;
+    var _str = '<div class="private_msg_other"><b>' + from + ' : </b>' + msg + '</div>';
+    attachMsg(_str); 
+})
+function joinRoom(proom) {
+    if (! proom) return;
+    if (proom == _nowRoom) return;
+    _socket.emit('_join', proom, function(data) {
+        if (data.msg == 'accept') {
+            _nowRoom = proom;
+            $('#roomInput').val(_nowRoom);
+            getuserList();
+            var _str = '<div class="userstatus_msg">you join the room : '+ proom +'</div>';
+            attachMsg(_str);
+        } else {
+            alert('join room fail');
+        }
+    });
+}
+function leaveRoom() {
+    var _str = '<div class="userstatus_msg">you leave the room : '+ _nowRoom +'</div>';
+    attachMsg(_str);
+    _socket.emit("_leave");
+    _nowRoom = 'Lobby';
+    $('#roomInput').val(_nowRoom);
+    getuserList();
+}
+function updateRooms() {
+    _socket.emit('_roomlist', function(data) {
+        $('#rooms').empty();
+        $('.room_unit').off('click');
+        for (var i =0;i < data.length; i++) {
+            var _room = $("<p class='room_unit'>").text(data[i].name);
+            $('#rooms').append(_room);
+        }
+        $('.room_unit').on('click', roomUnitClick);
+    });
+}
+function roomUnitClick(e) {
+    var _r = $(e.currentTarget).html();
+    $("#roomInput").val(_r);
+}
+function getuserList() {
+    _socket.emit('_userlist', function(data) {
+        $("#talkto option").remove();
+        $("#talkto").append($("<option></option>").attr("value", '').text('Everyone'));
+        $("#talkto").append($("<option></option>").attr("value", 'broadcast').text('Broadcast'));
+        $("#talkto").append($("<option></option>").attr("value", 'systemmsg').text('SystemMsg'));
+        for (var i = 0;i < data.length;i ++) {
+            if (data[i].id != _socket.id)
+                $("#talkto").append($("<option></option>").attr("value", data[i].id).text(data[i].uname));
+        }
+        $('#talkto option').get(0).selected = true;
+    });
+}
+function attachMsg(msg) {
+    $('#messages').append($(msg));
+    $('#messages').scrollTop($('#messages').height());
+}
+function onFormSubmit(e) {
+    e.preventDefault();
+    var msg = $('#messageInput').val();
+    if (msg == '') return;
+    var msgtype = $("#talkto").find("option:selected").text();
+    $('#messageInput').val('');
+
+    if (msgtype == 'Everyone') {
+        sendCommonMsg(msg);
+        return;
+    }
+    if (msgtype == 'Broadcast') {
+        sendBroadCast(msg);
+        return;
+    }
+    if (msgtype == 'SystemMsg') {
+        sendSystemMsg(msg);
+        return;
+    }
+    var _to = $("#talkto").find("option:selected").val();
+    var _toname = $("#talkto").find("option:selected").text();
+    sendPrivateMsg(_to, _toname, msg);
+}
+function sendCommonMsg(msg) {
+    var _str = '<div class="common_msg_me">' + msg + '</div>';
+    attachMsg(_str);
+    _socket.emit('msg', msg);
+}
+function sendPrivateMsg(whoid, whoname, msg) {
+    var to = whoname;
+    var _str = '<div class="private_msg_me">' + msg + '<b> : to ' + to + '</b></div>';
+    attachMsg(_str);
+    _socket.emit('_onlyto', whoid, msg);
+}
+function sendBroadCast(msg) {
+    _socket.emit('_toall', msg);
+}
+function sendSystemMsg(msg) {
+    _socket.emit('_sys', msg);
+}
+</script>

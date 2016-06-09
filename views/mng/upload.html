@@ -1,0 +1,515 @@
+ <!DOCTYPE html>
+ <head>
+ 
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+ 
+    <title>Upload Page</title>
+ 
+    <!-- Bootstrap Core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <!-- MetisMenu CSS -->
+    <link href="/css/metisMenu.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/css/sb-admin-2.css" rel="stylesheet">
+    <!-- Custom Fonts -->
+    <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+    .modal-content {
+        overflow: hidden;
+    }
+    
+    .j_ft_img, .j_ft_img > img {
+        width: 200px;
+    }
+    .j_ftable {
+        margin-bottom:0;
+    }
+    .j_fd_com {
+        position: relative;
+    }
+    .j_ftcover {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,114,227,.3);
+        border-style: dashed;
+        border-width: 2px;
+        border-color: rgb(0,114,227);
+        display: none;
+    }
+    </style>
+ </head>
+ 
+ <body>    
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="login-panel panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Upload</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form role="form" action="/getform" method="post" id="loginform">
+                        <button type="submit">送出</button>
+
+                        <!-- start jUpload -->
+                        <div id="j_fileDrop" class="j_fd_com">
+                            <span class="btn btn-success" id="j_afile-btn">
+                                <i class="glyphicon glyphicon-plus"></i>
+                                <span>Add files...</span>
+                            </span>
+                            <input type="file" name="files" id="j_ufile" multiple="multiple" style="display:none;">
+                            <div class="table-responsive j_ftable_dv" style="display:none;">
+                                <table class="table table-striped table-hover j_ftable">
+                                    <tbody>
+                                        <tr style="display:none;">
+                                            <td class="j_ft_img"></td>
+                                            <td>
+                                                <div class="j_ft_name"></div>
+                                                <div class="j_ft_size text-info"></div>
+                                                <div>
+                                                    <input type="hidden" name="filepaths" class="j_ft_hfile" value="">
+                                                    <div class="progress progress-striped active j_ft_progress_outer" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                                        <div class="progress-bar progress-bar-success j_ft_progress" style="width:0%;"></div>
+                                                    </div>
+                                                    <span>
+                                                        <button class="btn btn-primary j_start-btn">
+                                                            <i class="glyphicon glyphicon-upload"></i>
+                                                            <span>Start</span>
+                                                        </button>
+                                                    </span>
+                                                    <span>
+                                                        <div class="btn btn-warning j_cancel-btn">
+                                                            <i class="glyphicon glyphicon-ban-circle"></i>
+                                                            <span>Cancel</span>
+                                                        </div>
+                                                    </span>
+                                                    <span>
+                                                        <button type="button" class="btn btn-danger delete j_delete-btn" style="display:none;">
+                                                            <i class="glyphicon glyphicon-trash"></i>
+                                                            <span>Delete</span>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="j_ftcover"></div>
+                        </div>
+                        <!-- end jUpload -->
+
+
+                        <!-- start jUpload -->
+                        <div id="j_fileDrop2" class="j_fd_com">
+                            <span class="btn btn-success" id="j_afile-btn">
+                                <i class="glyphicon glyphicon-plus"></i>
+                                <span>Add files...</span>
+                            </span>
+                            <input type="file" name="files" id="j_ufile" multiple="multiple" style="display:none;">
+                            <div class="table-responsive j_ftable_dv" style="display:none;">
+                                <table class="table table-striped table-hover j_ftable" >
+                                    <tbody>
+                                        <tr style="display:none;">
+                                            <td class="j_ft_img"></td>
+                                            <td>
+                                                <div class="j_ft_name"></div>
+                                                <div class="j_ft_size text-info"></div>
+                                                <div>
+                                                    <input type="hidden" name="filepaths" class="j_ft_hfile" value="">
+                                                    <div class="progress progress-striped active j_ft_progress_outer" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                                        <div class="progress-bar progress-bar-success j_ft_progress" style="width:0%;"></div>
+                                                    </div>
+                                                    <span>
+                                                        <button class="btn btn-primary j_start-btn">
+                                                            <i class="glyphicon glyphicon-upload"></i>
+                                                            <span>Start</span>
+                                                        </button>
+                                                    </span>
+                                                    <span>
+                                                        <div class="btn btn-warning j_cancel-btn">
+                                                            <i class="glyphicon glyphicon-ban-circle"></i>
+                                                            <span>Cancel</span>
+                                                        </div>
+                                                    </span>
+                                                    <span>
+                                                        <button type="button" class="btn btn-danger delete j_delete-btn" style="display:none;">
+                                                            <i class="glyphicon glyphicon-trash"></i>
+                                                            <span>Delete</span>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="j_ftcover"></div>
+                        </div>
+                        <!-- end jUpload -->
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel">錯誤</h4>
+                    </div>
+                    <div class="modal-body">
+                        <!--這裡是錯誤訊息-->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+    </div>
+    <!-- jQuery -->
+    <script src="/js/jquery-1.12.1.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/js/bootstrap.min.js"></script>
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="/js/metisMenu.min.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="/js/sb-admin-2.js"></script>
+</body>
+</html>
+<script>
+(function(env) {
+    jUpload = function(param) {
+        var _url = "/upload";
+
+        var _files = [];
+        var _unit;
+        var _exitFiles = [];
+        var _exitFilesAdded = false;
+
+        this.allowfiles = "jpg,png,gif,jpeg,bmp";
+        this.id = '';
+        var _pic_exts = "jpg,png,gif,jpeg,bmp";
+        var _instanceId = '';
+        var _this;
+        var _eventListensers = [];
+        if (typeof param == 'string')
+            this.id = param;
+        else
+            for (var itm in param) {
+                this[itm] = param[itm];
+            }
+
+        this.init = function(id) {
+            _files = [];
+            _exitFiles = [];
+            _eventListensers = [];
+
+            _instanceId = id;
+            _this = this;
+
+            _unit = $('#'+_instanceId+" .j_ftable > tbody > tr").eq(0).clone();
+            $('#'+_instanceId+' .j_ftable > tbody > tr').eq(0).remove();
+
+            $('#'+_instanceId+' #j_afile-btn').on('click', function() {
+                $('#'+_instanceId+" #j_ufile").click();
+            });
+            $('#'+_instanceId+' #j_ufile').on('change', fileInputChange);
+            
+            var filedrop = $('#'+_instanceId);
+            filedrop.on('dragenter', function (e) {
+                $('#'+_instanceId + ' .j_ftcover').show();
+            });
+            filedrop.on('dragover', function (e) {
+                e.preventDefault();
+            });
+            filedrop.on('drop', onFormDrop);
+            $('#'+_instanceId + ' .j_ftcover').on('dragleave', function(e) {
+                $(this).hide();
+            });
+
+            $(document).on('dragenter dragover drop', function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+            });
+            if (!_exitFilesAdded)
+                exitFilesAdded(_exitFiles);
+        }
+
+        function fileInputChange() {
+            var files = $(this).get(0).files;
+            filesAdded(files);
+            $('#'+_instanceId+" #j_ufile").val('');
+        }
+        function uploadCancelClick(e) {
+            e.preventDefault();
+            var _index = $('#'+_instanceId+" .j_cancel-btn").index($(e.currentTarget));
+            if ($(e.currentTarget).hasClass("j_delete-btn"))
+                _index = $('#'+_instanceId+" .j_delete-btn").index($(e.currentTarget));
+            _files.splice(_index, 1);
+            $('#'+_instanceId+" .j_ftable > tbody > tr").eq(_index).fadeOut(function() {
+                this.remove();
+                if (_files.length == 0)
+                    $('#'+_instanceId+" .j_ftable_dv").hide();
+            });
+        }
+        function onFormDrop(e) {
+            $(this).removeClass("j-fileDrop-dash");
+            e.preventDefault();
+            e.stopPropagation();
+
+            var files = e.originalEvent.dataTransfer.files;
+            filesAdded(files);
+        }
+        function uploadStartClick(e) {
+            e.preventDefault();
+            _index = $('#'+_instanceId+" .j_start-btn").index(e.currentTarget);
+            var event = new Event('upload');
+            
+            doUploadOne(_index);
+        }
+        function exitFilesAdded(pfs) {
+            for (var i = 0;i < pfs.length;i++) {
+                var _file = {
+                    '_show' : true,
+                    '_upload' : true,
+                    'name' : pfs[i].name,
+                    '_id' : Date.now() + '_' + Math.round(Math.random()*100000)
+                }
+                _files.push(_file);
+                var _dom = _unit.clone().addClass('id_'+_file._id).fadeIn();
+                $(_dom).appendTo($('#'+_instanceId+" .j_ftable > tbody"));
+                $(".id_"+_file._id+" .j_ft_name").html('<strong>'+_file.name+'</strong>');
+                //$(".id_"+_file._id+" .j_ft_size").html(Math.floor(_file.size/1000)+' KB');
+                var _img = '<img src="'+_file.name+'">';
+                $(".id_"+_file._id+" .j_ft_img").append($(_img));
+                $(".id_"+_file._id+" .j_cancel-btn").hide();
+                $(".id_"+_file._id+" .j_delete-btn").on("click", uploadCancelClick).show();
+                $(".id_"+_file._id+" .j_start-btn").hide();
+                $(".id_"+_file._id+" .j_ft_progress_outer").hide();
+            }
+        }
+        this.addFiles = function(efiles) {
+            _exitFiles = efiles;
+            _exitFilesAdded = true;
+            exitFilesAdded(efiles);
+        }
+        this.on = function(eType, cb) {
+            _eventListensers.push({'type':eType,'callback':cb});
+        }
+        this.off = function(eType, cb) {
+            for (var i = _eventListensers.length-1; i >= 0; i--) {
+                var e = _eventListensers[i];
+                if (e.type == eType) {
+                    if (cb) {
+                        if (e.callback == cb)
+                            _eventListensers.splice(i, 1);
+                    } else
+                        _eventListensers.splice(i ,1);
+                }
+            }
+        }
+        this.dispatchEvent = function(event) {
+            for (var i = _eventListensers.length-1; i >= 0; i--) {
+                var e = _eventListensers[i];
+                if (e.type == event.type)
+                    e.callback(event);
+            }
+        }
+
+        function filesAdded(pfs) {
+            var _wrong = [];
+            for (var i = 0;i < pfs.length; i++){
+                var _ext = pfs[i].name.split(".")[pfs[i].name.split(".").length-1].toLowerCase();
+                if (_this.allowfiles.indexOf(_ext) >= 0) {
+                    pfs[i]._show = false;
+                    pfs[i]._upload = false;
+                    _files.push(pfs[i]);
+                } else {
+                    _wrong.push(pfs[i].name);
+                }
+            }
+            if (_wrong.length > 0) {
+                var event = new Event('wrongfile');
+                event.files = _wrong;
+                _this.dispatchEvent(event);
+            }
+            
+            for (var i = 0;i < _files.length; i++) {
+                var _file = _files[i];
+                if (! _file._show) {
+                    _file._id = Date.now() + '_' + Math.round(Math.random()*100000);
+                    var _dom = _unit.clone().addClass('id_'+_file._id).fadeIn();
+                    $(_dom).appendTo($('#'+_instanceId+" .j_ftable > tbody"));
+                    $(".id_"+_file._id+" .j_ft_name").html('<strong>'+_file.name+'</strong>');
+                    $(".id_"+_file._id+" .j_ft_size").html(Math.floor(_file.size/1000)+' KB');
+                    if (_file.type.match('image.*')) {
+                        var reader = new FileReader();
+                        reader.onload = (function(thefile) {
+                            return function(e) {
+                                var _img = '<img src="'+e.target.result+'">';
+                                $(".id_"+thefile._id+" .j_ft_img").append($(_img));
+                            }
+                        })(_file);
+                        reader.readAsDataURL(_file);
+                    }
+                    $(".id_"+_file._id+" .j_cancel-btn").on("click", uploadCancelClick);
+                    $(".id_"+_file._id+" .j_delete-btn").on("click", uploadCancelClick);
+                    $(".id_"+_file._id+" .j_start-btn").on("click", uploadStartClick);
+                    _file._show = true;
+                }
+            }
+            $('#'+_instanceId+" .j_ftable_dv").show();
+        }
+        function onFormDrop(e) {
+            $('#'+_instanceId + ' .j_ftcover').hide();
+            e.preventDefault();
+            e.stopPropagation();
+
+            var files = e.originalEvent.dataTransfer.files;
+            filesAdded(files);
+        }
+        function uploadStartClick(e) {
+            e.preventDefault();
+            _index = $('#'+_instanceId+" .j_start-btn").index(e.currentTarget);
+            var event = new Event('upload');
+            
+            doUploadOne(_index);
+        }
+        function exitFilesAdded(pfs) {
+            for (var i = 0;i < pfs.length;i++) {
+                var _file = {
+                    '_show' : true,
+                    '_upload' : true,
+                    'name' : pfs[i].name,
+                    '_id' : Date.now() + '_' + Math.round(Math.random()*100000)
+                }
+                _files.push(_file);
+                var _dom = _unit.clone().addClass('id_'+_file._id).fadeIn();
+                $(_dom).appendTo($('#'+_instanceId+" .j_ftable > tbody"));
+                $(".id_"+_file._id+" .j_ft_name").html('<strong>'+_file.name+'</strong>');
+                var _ext = _file.name.split(".")[_file.name.split(".").length-1];
+                if (_pic_exts.indexOf(_ext) >= 0) {
+                    var _img = '<img src="'+_file.name+'">';
+                    $(".id_"+_file._id+" .j_ft_img").append($(_img));
+                }
+                $(".id_"+_file._id+" .j_ft_hfile").val(_file.name);
+                $(".id_"+_file._id+" .j_cancel-btn").hide();
+                $(".id_"+_file._id+" .j_delete-btn").on("click", uploadCancelClick).show();
+                $(".id_"+_file._id+" .j_start-btn").hide();
+                $(".id_"+_file._id+" .j_ft_progress_outer").hide();
+            }
+            if (pfs.length > 0)
+                $('#'+_instanceId+" .j_ftable_dv").show();
+        }
+        function doUploadOne(index, fdata) {
+            var uploadURL = jUpload.url;
+            var formdata = new FormData();
+            /*for (var i= 0;i < _files.length;i ++) {
+                formdata.append('file', _files[i], _files[i].name)
+            }*/
+            formdata.append('file', _files[index], _files[index].name);
+            if (fdata) {
+                for (var itm in fdata) {
+                    formdata.append(itm, fdata[itm]);
+                }
+            }
+
+            $.ajax({
+                xhr: function() {
+                    var xhrobj = $.ajaxSettings.xhr();
+                    if (xhrobj.upload) {
+                            xhrobj.upload.addEventListener('progress', function(event) {
+                                var percent = 0;
+                                var position = event.loaded || event.position;
+                                var total = event.total;
+                                if (event.lengthComputable) {
+                                    percent = Math.ceil(position / total * 100);
+                                }
+                                setProgress(index,percent);
+                            }, false);
+                        }
+                    return xhrobj;
+                },
+                url: uploadURL,
+                type: 'POST',
+                data: formdata,
+                contentType: false,
+                processData: false,
+                success: function(data){
+                    setProgress(index, 100);
+                    _files[index]._upload = true;
+                    var _data = JSON.parse(data);
+                    $('#'+_instanceId+" .j_ft_hfile").eq(index).val(_data[0].new_name);
+                }
+            });
+        }
+        function setProgress(index, percent) {
+            $('#'+_instanceId+" .j_ft_progress").eq(index).css({'width' : percent + '%'});
+            if (percent == 100) {
+                $('#'+_instanceId+" .j_start-btn").eq(index).fadeOut(function() {
+                    $('#'+_instanceId+" .j_delete-btn").eq(index).fadeIn();
+                });
+                $('#'+_instanceId+" .j_cancel-btn").eq(index).fadeOut();
+                $('#'+_instanceId+" .j_ft_progress_outer").eq(index).fadeOut();
+            }
+        }
+        function setProgress(index, percent) {
+            $('#'+_instanceId+" .j_ft_progress").eq(index).css({'width' : percent + '%'});
+            if (percent == 100) {
+                $('#'+_instanceId+" .j_start-btn").eq(index).fadeOut(function() {
+                    $('#'+_instanceId+" .j_delete-btn").eq(index).fadeIn();
+                });
+                $('#'+_instanceId+" .j_cancel-btn").eq(index).fadeOut();
+                $('#'+_instanceId+" .j_ft_progress_outer").eq(index).fadeOut();
+            }
+        }
+        if (this.id)
+            this.init(this.id);
+        else
+            console.log('jUpload Error : No element id');
+    }
+    env.jUpload = jUpload;
+})(this);
+
+var j2 = new jUpload({
+    'id':'j_fileDrop2',
+    'allowfiles':'mp4'
+});
+
+
+j2.addFiles([
+    { name:'/uploads/1464004467005-41251.jpg' },
+    { name:'/uploads/1464004543637-86084.jpg' },
+    { name:'/uploads/小毛驢.mp4'}
+]);
+j2.on('wrongfile', function(e) {
+    console.log('j2 wrongfile');
+    console.log(e.files);
+});
+
+var j1 = new jUpload('j_fileDrop');
+j1.on('wrongfile', function(e) {
+    console.log('j1 wrongfile');
+    console.log(e.files);
+});
+</script>
+

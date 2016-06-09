@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Hduino Console</title>
+	</head>
+	<body>
+		<textarea id="output"></textarea>
+		<input id="m" autocomplete="off" /><button>Send</button>
+	</body>
+</html>
+<script src="../public/js/socket.io.js"></script>
+<script src="../public/js/jquery-1.12.1.min.js"></script>
+<script>
+var _url = "http://220.128.166.88/";
+var _socket = io(_url, { path: '/jason/socket'});
+_socket.on("connect", function() {
+   	console.log("socket connected");
+   	_socket.emit("join","picar", function(data) {
+   		console.log(data);
+   	});
+});
+/*_socket.on("join", function() {
+	console.log(arguments);
+});
+_socket.on('msg', function(msg, msg2, msg3) {
+	console.log('msg', msg, msg2, msg3);
+	var _str = $("#output").html();
+	$("#output").html(_str + '\n' + msg);
+});
+$("button").on('click', function(e) {
+	_socket.emit('msg', $('#m').val(), 222, 333);
+});*/
+</script>
