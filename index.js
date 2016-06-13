@@ -1,7 +1,7 @@
 var express = require('express');
 var app = express();
 //app.enable('trust proxy')
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 3001;
 process.env.NODE_ENV = app.get('env');
 console.log('NODE_ENV='+process.env.NODE_ENV);
 
