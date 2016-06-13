@@ -1,8 +1,8 @@
 {
   "apps" : [{
-    "name" : "express_p1",
+    "name" : "Jason",
     "script" : "index.js",
-    "watch" : true,
+    "watch" : false,
     "ignore_watch" : ["node_modules", "dev", "public", ".git"],
     "env": {
       "NODE_ENV": "development",
