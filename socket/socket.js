@@ -32,11 +32,8 @@ module.exports = function(server) {
 	    	};
 	    	if (param.uname) {
 	    		usersDic[socket.id].uname = param.uname;
-	    		//if (param.room)
-	    		//	joinRoom(socket, param.room);
 	    		robj = {
 	    			'id' : socket.id,
-	    			//'room' : usersDic[socket.id].room,
 	    			'msg' : 'accept'
 	    		};
 	    	}

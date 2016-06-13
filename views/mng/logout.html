@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<head>
+  <% include ./head.html %>
+  <meta name="google-signin-client_id" content="198094167552-efpmn3jjatrhjkcf2vo3bf13p7toq1rh.apps.googleusercontent.com">
+</head>
+
+<body>    
+  <div class="container">
+      <div class="row">
+          <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+              <div class="login-panel panel panel-default" style="display:none">
+                <div class="g-signin2" data-longtitle="true" data-onsuccess="signOut"></div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <% include ./pagealert.html %>
+</body>
+</html>
+<!--<script src="<%=vpath%>/js/mng/login.js"></script>-->
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<script>
+function signOut() {
+  var auth2 = gapi.auth2.getAuthInstance();
+  auth2.signOut().then(function () {
+    console.log('User signed out.');
+    pageAlert.show('已登出','success', function(confirm) {
+      location.replace(vpath + '/mng/login');
+    });
+  });
+}
+</script>

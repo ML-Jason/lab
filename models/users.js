@@ -2,11 +2,11 @@ var mongoose = require('mongoose');
 var async = require('async');
 
 var userSchema = mongoose.Schema({
-	username : { type : String, index : true},
+	email : { type : String, index : true},
 	nickname : String,
-	pwd : String,
-	authlevel : String,
-	email : String,
+	//pwd : String,
+	role : String,
+	//email : String,
 	logindate : Number,
 	createdate : { type: Date, default: Date.now }
 });
@@ -56,7 +56,7 @@ Users.getUsersList = function(page, pagesize, cb) {
     	},
     	function(callback) {
     		if (rdata.totalpage < rdata.page) rdata.page = rdata.totalpage;
-    		Users.find({}).select('_id username nickname authlevel')
+    		Users.find({}).select('_id email nickname role')
 			.skip((rdata.page-1)*pagesize)
 			.limit(pagesize)
 			.sort({ 'createdate':-1 })

@@ -1,11 +1,11 @@
 $(onReady);
 function onReady() {
-    
+    //console.log(vpath);
 }
 function onFailure(error) {
   console.log(error);
+  pageAlert.showError(error.reason);
 }
-
 var renderTimer = 0;
 function renderButton() {
   gapi.signin2.render('my-signin2', {
@@ -32,7 +32,28 @@ function onSignIn(googleUser) {
   console.log('Image URL: ' + profile.getImageUrl());
   console.log('Email: ' + profile.getEmail());
   var id_token = googleUser.getAuthResponse().id_token;
-  console.log("ID Token: " + id_token);
+  console.log('ID Token: ' + id_token);
 
-  //location.replace()
+  pageAlert.show('登入驗證中','info');
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/jason/api/tokensignin');
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.onload = function() {
+    console.log('Signed in as: ' + xhr.responseText);
+    var _obj = $.parseJSON(xhr.responseText);
+    if (_obj.status != 'OK') {
+      signOut();
+      pageAlert.showError(_obj.message);
+    } else {
+      location.replace(vpath + '/mng/users/');
+    }
+  };
+  xhr.send('idtoken=' + id_token);
+}
+function signOut() {
+  var auth2 = gapi.auth2.getAuthInstance();
+  auth2.signOut().then(function () {
+    console.log('User signed out.');
+  });
 }

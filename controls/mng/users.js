@@ -15,6 +15,10 @@ module.exports = function(app) {
 	app.get(vpath + '/mng/users/add', addUserGet);
 	app.post(vpath + '/mng/users/add', addUserPost);
 
+	app.all(vpath + '/mng/users/me', function(req, res) {
+		var _id = req.session._u._id;
+		res.redirect(vpath + '/mng/users/'+_id);
+	});
 	app.get(vpath + '/mng/users/:id', modUserGet);
 	app.post(vpath + '/mng/users/:id', modUserPost);
 }
@@ -49,7 +53,6 @@ function userslist(req, res) {
     		data.next = vpath + '/mng/users/?page='+(parseInt(data.page)+1).toString()+'&pagesize='+data.pagesize;
     	if (data.page > 1)
     		data.prev = vpath + '/mng/users/?page='+(parseInt(data.page)-1).toString()+'&pagesize='+data.pagesize;
-		//data.alert_msg = _ps.alert_msg || '';
 		data.page_alert = _ps.page_alert;
 		data.page_title = "使用者列表";
 		data.vpath = vpath;
@@ -91,7 +94,7 @@ function delUsers(req,res) {
 	usersModel.delById(req.body.uids, function(err, data) {
 		var _ps = {
   			'path' : vpath + '/mng/users',
-  			'page_alert' : { 'msg': '刪除成功' }
+  			'page_alert' : { 'msg': '刪除成功', 'type':'success' }
   		}
   		psession.set(req, _ps);
 		res.redirect(vpath + '/mng/users');
@@ -108,7 +111,7 @@ function deloneUser(req, res) {
 	usersModel.delById([_id], function(err, data) {
 		var _ps = {
   			'path' : vpath + '/mng/users',
-  			'page_alert' : { 'msg': '刪除成功' }
+  			'page_alert' : { 'msg': '刪除成功', 'type':'success' }
   		}
   		psession.set(req, _ps);
 		res.redirect(vpath + '/mng/users');
@@ -125,12 +128,12 @@ function deloneUser(req, res) {
 */
 function addUserGet(req, res) {
 	var _data = {
-		'username' : '', 'nickname' : '', 'alert_msg' : '', 'mode' : 'add'
+		'email' : '', 'nickname' : '', 'role': '', 'alert_msg' : '', 'mode' : 'add'
 	}
 	var _ps = psession.get(req);
-	_data.username = _ps.username || '';
+	_data.email = _ps.email || '';
 	_data.nickname = _ps.nickname || '';
-	_data.page_alert = _ps.page_alert || '';
+	_data.page_alert = _ps.page_alert || {};
 	_data.vpath = vpath;
 	_data.page_title = '新增使用者';
 	
@@ -138,14 +141,14 @@ function addUserGet(req, res) {
 }
 function addUserPost(req, res) {
 	var _user = {
-		'username' : req.body.username,
+		'email' : req.body.email,
 		'nickname' : req.body.nickname,
-		'pwd' : req.body.password
+		'role' : req.body.role
 	}
 
-	req.checkBody('username', '無效的Username').isLoginId().isLength({min:6, max:20});
+	req.checkBody('email', '無效的Email').isEmail();
 	req.checkBody('nickname', 'nickname空白').notEmpty();
-	req.checkBody('password', '無效的密碼').isPassword().isLength({min:6, max:20});
+	req.checkBody('role', '權限是空白的').notEmpty();
 
 	var errors = req.validationErrors();
 	if (errors) {
@@ -156,17 +159,17 @@ function addUserPost(req, res) {
 		var _ps = {
 			'path' : vpath + '/mng/users/add',
 			'page_alert' : { 'msg': errmsg },
-			'username' : _user.username,
-			'nickname' : _user.nickname
+			'email' : _user.email,
+			'nickname' : _user.nickname,
+			'role' : _user.role
 		}
 		psession.set(req, _ps);
     	return res.redirect(vpath + '/mng/users/add');
   	}
-  	_user.pwd = secure.hash(_user.pwd);
   	usersModel.create(_user, function(err, data) {
   		var _ps = {
   			'path' : vpath + '/mng/users',
-  			'page_alert' : { 'msg': '新增成功' }
+  			'page_alert' : { 'msg': '新增成功', 'type':'success' }
   		}
   		psession.set(req, _ps);
 		res.redirect(vpath + '/mng/users');
@@ -202,8 +205,9 @@ function modUserGet(req, res) {
 		delete _d.pwd;
 		_d.mode = 'mod';
 		_d.page_alert = _ps.page_alert;
-		_d.username = _ps.username || _d.username;
+		_d.email = _ps.email || _d.email;
 		_d.nickname = _ps.nickname || _d.nickname;
+		_d.role = _ps.role || _d.role;
 		_d.vpath = vpath;
 		_d.page_title = '修改使用者資料';
 		res.render('mng/users_add.html', _d);
@@ -220,13 +224,13 @@ function modUserPost(req, res) {
 	if (_ps._id != _id)
 		return onErrorRedirect();
 
-	var _user = { 'nickname' : req.body.nickname}
+	var _user = {
+		'nickname' : req.body.nickname,
+		'role' : req.body.role
+	}
 
 	req.checkBody('nickname', 'nickname空白').notEmpty();
-	if (req.body.password) {
-		req.checkBody('password', '無效的密碼').isPassword().isLength({min:6, max:20});
-		_user.pwd = req.body.password;
-	}
+	req.checkBody('role', '權限是空白的').notEmpty();
 
 	var errors = req.validationErrors();
 	if (errors) {
@@ -237,8 +241,9 @@ function modUserPost(req, res) {
 		var _ps = {
 			'path' : vpath + '/mng/users/'+ _id,
 			'page_alert' : { 'msg' : errmsg },
-			'username' : _user.username,
+			'email' : _user.email,
 			'nickname' : _user.nickname,
+			'role' : _role,
 			'vpath' : vpath,
 			'page_title' : '修改使用者資料'
 		}
@@ -251,7 +256,7 @@ function modUserPost(req, res) {
   	usersModel.updateData({'_id':_id}, _user, function(err, data) {
   		var _ps = {
   			'path' : vpath + '/mng/users',
-  			'page_alert' : { 'msg': '修改成功' }
+  			'page_alert' : { 'msg': '修改成功', 'type':'success' }
   		}
   		psession.set(req, _ps);
   		res.redirect(vpath + '/mng/users');

@@ -1,0 +1,1 @@
+var vpath = $('meta[name="path"]').attr("content");

@@ -5,6 +5,8 @@ var port = process.env.PORT || 3000;
 process.env.NODE_ENV = app.get('env');
 console.log('NODE_ENV='+process.env.NODE_ENV);
 
+app.locals.vpath = '/jason';
+
 //view engine
 require('./lib/viewEngine.js')(app);
 
@@ -14,7 +16,6 @@ require('./lib/viewEngine.js')(app);
 var helmet = require('helmet');
 app.use(helmet());
 
-app.locals.vpath = '/jason';
 //set static dirs
 if (app.locals.vpath == '')
 	app.use(express.static('./public'));
@@ -30,7 +31,6 @@ app.use(expressValidator({
 	customValidators : require('./lib/validator_ext.js')
 }));
 require('./lib/validator_ext.js').extendValidator();
-
 app.use(require('cookie-parser')());
 
 //use session

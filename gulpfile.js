@@ -110,8 +110,9 @@ var jsfiles_conf = [
           'metisMenu.min.js',
           'sb-admin-2.js',
           'jquery.tooltipster.min.js',
-          'sweetalert.min.js',
-          'pagealert.js'
+          'sweetalert2.min.js',
+          'pagealert.js',
+          'global.js'
       ],
       'dist_dir' : './public/js/',
       'output_file' : 'common.js'
@@ -182,7 +183,7 @@ var cssfiles_conf = [
           'font-awesome.min.css',
           'metisMenu.min.css',
           'sb-admin-2.css',
-          'sweetalert.css',
+          'sweetalert2.min.css',
           'tooltipster.css',
           'themes/tooltipster-shadow.css'
       ],

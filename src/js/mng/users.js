@@ -20,7 +20,8 @@ function delBtnClick(e) {
     selIndex = _index;
     pageAlert.showConfirm("確定要刪除嗎",delConfirmClick);
 }
-function delConfirmClick(e) {
+function delConfirmClick(confirm) {
+    if (!confirm) return;
     if (confirmtype == "del") {
         var _id = $(".item-checkbox").eq(selIndex).val();
         var _url = $("#usersform").prop("action");

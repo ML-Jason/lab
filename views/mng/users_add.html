@@ -45,10 +45,10 @@
                                           <label for="username" class="col-sm-2 control-label"><span id="needs"> * </span>UserName</label>
                                           <div class="col-sm-10">
                                               <% if (mode == 'add') {%>
-                                              <input type="text" class="form-control" id="username" name="username" placeholder="UserName" value="<%= username%>">
+                                              <input type="text" class="form-control" id="email" name="email" placeholder="EMail" value="<%= email%>">
                                               <%
                                               } else {
-                                              %><label class="control-label"><%= username %></label><%
+                                              %><label class="control-label"><%= email %></label><%
                                               }
                                               %>
                                               <p class="help-block">6-20個字元的英數字母混合</p>
@@ -61,10 +61,12 @@
                                           </div>
                                       </div>
                                       <div class="form-group">
-                                          <label for="password" class="col-sm-2 control-label">Password</label>
+                                          <label for="password" class="col-sm-2 control-label">權限</label>
                                           <div class="col-sm-10">
-                                              <input type="password" class="form-control" id="password" name="password" placeholder="">
-                                              <p class="help-block">6-20個字元的英數字母混合</p>
+                                              <select class="form-control input-sm role-select" name="role">
+                                                <option value='member' <%=(role == 'member') ? 'selected' : ''%>>實驗室成員</option>
+                                                <option value='admin' <%=(role == 'admin') ? 'selected' : ''%>>管理者</option>
+                                              </select>
                                           </div>
                                       </div>
                                       <div class="col-sm-12">
@@ -106,25 +108,20 @@ function onReady() {
 function onSubmit(e) {
   e.preventDefault();
 
-  var uname = $("#username").val() || "";
-  uname = validator.trim(uname);
-  var pwd = validator.trim($("#password").val());
+  var email = $("#email").val() || "";
+  email = validator.trim(email);
+
+  //var pwd = validator.trim($("#password").val());
   var nname = validator.trim($("#nickname").val());
   if ($("#etype").val() == "add") {
-      if (! validator.isLoginId(uname) || !validator.isLength(uname, {min:6, max:20})) {
-          pageAlert.showError("無效的帳號");
-          return;
-      }
-  }
-  if (! nname) {
-      pageAlert.showError("請填寫NickName");
+    if (! validator.isEmail(email)) {
+      pageAlert.showError("無效的Email");
       return;
-  }
-  if ($("#etype").val() == "add" || pwd != "") {
-      if (! validator.isPassword(pwd) || !validator.isLength(pwd,{min:6, max:20})) {
-          pageAlert.showError("無效的密碼");
-          return;
-      }
+    }
+    if (email.indexOf("@medialand.tw") < 0) {
+      pageAlert.showError("要用medialand的email才行喔!");
+      return;
+    }
   }
   $("#addform").off("submit");
   $("#addform").submit();

@@ -11,20 +11,9 @@ module.exports = function(app) {
 	});
 
 	require('./mng/')(app);
+	require('./api/')(app);
 
-	/*app.get('/api/:type/upload', function(req, res) {
-		console.log(req.params.type);
-		var str = '<form action="/upload" method="post" enctype="multipart/form-data">'+
-    		'<input type="file" name="upload" multiple="multiple"><br>'+
-    		'<input type="file" name="upload" multiple="multiple"><br>'+
-    		'<input type="submit" value="Upload File">'+
-    		'</form>';
-    	res.send(str);
-	});*/
-	app.post('/getform', function(req, res) {
-		console.log(req.body.filepaths);
-		res.send('form');
-	});
+	
 	app.get('/upload', function(req,res) {
 		res.render('mng/upload');
 	});
