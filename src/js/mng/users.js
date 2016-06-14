@@ -18,7 +18,7 @@ function delBtnClick(e) {
     var _index = $(".btn-del").index($(e.currentTarget));
     confirmtype = "del";
     selIndex = _index;
-    pageAlert.showConfirm("確定要刪除嗎",delConfirmClick);
+    pageAlert.showConfirm({"title":"確定要刪除嗎"},delConfirmClick);
 }
 function delConfirmClick(confirm) {
     if (!confirm) return;
@@ -41,7 +41,7 @@ function delselectedBtnClick(e) {
     }
     if (! _selected) return;
     confirmtype = "delselected";
-    pageAlert.showConfirm("確定要刪除嗎",delConfirmClick);
+    pageAlert.showConfirm({"title":"確定要刪除嗎"},delConfirmClick);
 }
 function selectallBtnClick(e) {
     if ($(".btn-selectall").eq(0).html() == '全選') {

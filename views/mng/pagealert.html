@@ -1,4 +1,4 @@
 <%
 var pagealert = (locals.page_alert) ? locals.page_alert : {};
 %>
-<div id="pagealertdata" style="display:none;" data-type="<%=pagealert.type || 'error'%>"><%=pagealert.msg || ''%></div>
+<div id="pagealertdata" style="display:none;" data-type="<%=pagealert.type || 'error'%>" data-title="<%=pagealert.title || ''%>" data-errprop="<%=pagealert.errprop || ''%>"><%=pagealert.text || ''%></div>

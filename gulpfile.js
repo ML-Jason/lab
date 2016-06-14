@@ -109,7 +109,7 @@ var jsfiles_conf = [
           'bootstrap.min.js',
           'metisMenu.min.js',
           'sb-admin-2.js',
-          'jquery.tooltipster.min.js',
+          'tooltipster.bundle.min.js',
           'sweetalert2.min.js',
           'pagealert.js',
           'global.js'
@@ -184,8 +184,9 @@ var cssfiles_conf = [
           'metisMenu.min.css',
           'sb-admin-2.css',
           'sweetalert2.min.css',
-          'tooltipster.css',
-          'themes/tooltipster-shadow.css'
+          'tooltipster.bundle.min.css',
+          'themes/tooltipster-sideTip-shadow.min.css',
+          'global.css'
       ],
       'dist_dir' : './public/css/',
       'output_file' : 'common.css'

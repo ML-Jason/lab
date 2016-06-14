@@ -2,30 +2,31 @@
     var pageAlert = {
         checkOnPageLoad : function() {
             var _alertType = $("#pagealertdata").attr("data-type");
+            var _alertTitle = $("#pagealertdata").attr("data-title");
             var _alertMsg = $("#pagealertdata").html();
-            if (_alertMsg) {
-                /*swal({
-                    //title: "Warning!",
-                    title: _alertMsg,
-                    type: _alertType,
-                    confirmButtonText: "OK",
-                    allowEscapeKey : true,
-                    allowOutsideClick : true
-                });*/
-                pageAlert.show(_alertMsg, _alertType);
+            if (_alertMsg || _alertTitle) {
+                pageAlert.show({
+                    "title" : _alertTitle,
+                    "text" : _alertMsg,
+                    "type" : _alertType
+                });
             }
         },
-        show : function(msg, type, callback) {
-            swal({
-                title: msg,
-                type: type,
+        show : function(obj, callback) {
+            var _obj = {
                 confirmButtonText: "OK",
                 allowEscapeKey : true,
                 allowOutsideClick : true
-            }).then(callback);
+            }
+            for (var itm in obj) {
+                _obj[itm] = obj[itm];
+            }
+            swal(_obj).then(callback);
         },
-        showError : function(msg, callback) {
-            swal({
+        showError : function(obj, callback) {
+            obj.type = "error";
+            pageAlert.show(obj, callback);
+            /*swal({
                 //title: "錯誤!",
                 //text: msg,
                 title: msg,
@@ -33,10 +34,16 @@
                 confirmButtonText: "OK",
                 allowEscapeKey : true,
                 allowOutsideClick : true
-            }).then(callback);
+            }).then(callback);*/
         },
-        showConfirm : function(msg, callback) {
-            swal({
+        showConfirm : function(obj, callback) {
+            obj.type = "warning";
+            obj.showCancelButton = true;
+            obj.confirmButtonColor = "#DD6B55";
+            obj.confirmButtonText = "Yes";
+            obj.cancelButtonText = "No";
+            pageAlert.show(obj, callback);
+            /*swal({
                 title: msg,
                 type: "warning",
                 showCancelButton: true,
@@ -44,7 +51,7 @@
                 confirmButtonText: "Yes",
                 cancelButtonText: "No",
                 //closeOnConfirm: false,   closeOnCancel: false
-            }).then(callback);
+            }).then(callback);*/
         }
     }
     env.pageAlert = pageAlert;

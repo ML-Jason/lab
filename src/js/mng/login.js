@@ -4,7 +4,10 @@ function onReady() {
 }
 function onFailure(error) {
   console.log(error);
-  pageAlert.showError(error.reason);
+  pageAlert.showError({
+    "title": "登入錯誤",
+    "text" : error.reason
+  });
 }
 var renderTimer = 0;
 function renderButton() {
@@ -34,7 +37,10 @@ function onSignIn(googleUser) {
   var id_token = googleUser.getAuthResponse().id_token;
   console.log('ID Token: ' + id_token);
 
-  pageAlert.show('登入驗證中','info');
+  pageAlert.show({
+    'title':'登入驗證中',
+    'type':'info'
+  });
 
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '/jason/api/tokensignin');
@@ -44,7 +50,7 @@ function onSignIn(googleUser) {
     var _obj = $.parseJSON(xhr.responseText);
     if (_obj.status != 'OK') {
       signOut();
-      pageAlert.showError(_obj.message);
+      pageAlert.showError({"title":_obj.message});
     } else {
       location.replace(vpath + '/mng/users/');
     }

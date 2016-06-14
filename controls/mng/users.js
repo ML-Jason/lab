@@ -94,7 +94,7 @@ function delUsers(req,res) {
 	usersModel.delById(req.body.uids, function(err, data) {
 		var _ps = {
   			'path' : vpath + '/mng/users',
-  			'page_alert' : { 'msg': '刪除成功', 'type':'success' }
+  			'page_alert' : { 'text': '刪除成功', 'type':'success' }
   		}
   		psession.set(req, _ps);
 		res.redirect(vpath + '/mng/users');
@@ -111,7 +111,7 @@ function deloneUser(req, res) {
 	usersModel.delById([_id], function(err, data) {
 		var _ps = {
   			'path' : vpath + '/mng/users',
-  			'page_alert' : { 'msg': '刪除成功', 'type':'success' }
+  			'page_alert' : { 'text': '刪除成功', 'type':'success' }
   		}
   		psession.set(req, _ps);
 		res.redirect(vpath + '/mng/users');
@@ -128,7 +128,7 @@ function deloneUser(req, res) {
 */
 function addUserGet(req, res) {
 	var _data = {
-		'email' : '', 'nickname' : '', 'role': '', 'alert_msg' : '', 'mode' : 'add'
+		'email' : '', 'nickname' : '', 'role': '', 'mode' : 'add'
 	}
 	var _ps = psession.get(req);
 	_data.email = _ps.email || '';
@@ -147,18 +147,19 @@ function addUserPost(req, res) {
 	}
 
 	req.checkBody('email', '無效的Email').isEmail();
-	req.checkBody('nickname', 'nickname空白').notEmpty();
-	req.checkBody('role', '權限是空白的').notEmpty();
+	req.checkBody('nickname', 'NickName為必填').notEmpty();
+	req.checkBody('role', '權限為必填').notEmpty();
 
 	var errors = req.validationErrors();
+	var _ps = {};
 	if (errors) {
 		var errmsg = '';
 		for (var i= 0;i < errors.length; i++) {
-			errmsg += errors[i].msg + '<br/>';
+			errmsg += errors[i].msg + '\n';
 		}
-		var _ps = {
+		_ps = {
 			'path' : vpath + '/mng/users/add',
-			'page_alert' : { 'msg': errmsg },
+			'page_alert' : { 'text': errmsg },
 			'email' : _user.email,
 			'nickname' : _user.nickname,
 			'role' : _user.role
@@ -166,13 +167,38 @@ function addUserPost(req, res) {
 		psession.set(req, _ps);
     	return res.redirect(vpath + '/mng/users/add');
   	}
-  	usersModel.create(_user, function(err, data) {
-  		var _ps = {
-  			'path' : vpath + '/mng/users',
-  			'page_alert' : { 'msg': '新增成功', 'type':'success' }
-  		}
-  		psession.set(req, _ps);
-		res.redirect(vpath + '/mng/users');
+  	usersModel.findOne({'email':_user.email}, '_id', function(err, data) {
+  		if (! err) {
+  			if(data) {
+  				_ps = {
+					'path' : vpath + '/mng/users/add',
+					'page_alert' : { 'text': '這個Email已經存在了!' },
+					'email' : _user.email,
+					'nickname' : _user.nickname,
+					'role' : _user.role
+				}
+				psession.set(req, _ps);
+    			return res.redirect(vpath + '/mng/users/add');
+  			}
+  			usersModel.create(_user, function(err, data) {
+  				_ps = {
+		  			'path' : vpath + '/mng/users',
+		  			'page_alert' : { 'text': '新增成功', 'type':'success' }
+		  		}
+		  		psession.set(req, _ps);
+				return res.redirect(vpath + '/mng/users');
+		  	});
+  		} else {
+	  		_ps = {
+				'path' : vpath + '/mng/users/add',
+				'page_alert' : { 'text': JSON.stringify(err) },
+				'email' : _user.email,
+				'nickname' : _user.nickname,
+				'role' : _user.role
+			}
+	  		psession.set(req, _ps);
+			return res.redirect(vpath + '/mng/users');
+		}
   	});
 }
 
@@ -229,8 +255,8 @@ function modUserPost(req, res) {
 		'role' : req.body.role
 	}
 
-	req.checkBody('nickname', 'nickname空白').notEmpty();
-	req.checkBody('role', '權限是空白的').notEmpty();
+	req.checkBody('nickname', 'NickName為必填').notEmpty();
+	req.checkBody('role', '權限為必填').notEmpty();
 
 	var errors = req.validationErrors();
 	if (errors) {
@@ -240,7 +266,7 @@ function modUserPost(req, res) {
 		}
 		var _ps = {
 			'path' : vpath + '/mng/users/'+ _id,
-			'page_alert' : { 'msg' : errmsg },
+			'page_alert' : { 'text' : errmsg },
 			'email' : _user.email,
 			'nickname' : _user.nickname,
 			'role' : _role,
@@ -256,7 +282,7 @@ function modUserPost(req, res) {
   	usersModel.updateData({'_id':_id}, _user, function(err, data) {
   		var _ps = {
   			'path' : vpath + '/mng/users',
-  			'page_alert' : { 'msg': '修改成功', 'type':'success' }
+  			'page_alert' : { 'text': '修改成功', 'type':'success' }
   		}
   		psession.set(req, _ps);
   		res.redirect(vpath + '/mng/users');

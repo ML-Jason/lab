@@ -4,7 +4,7 @@
 <head>
   <% include ./head.html %>
   <style>
-  #needs {
+  .needs {
       color: red;
       font-weight: bold;
       font-size: 16px;
@@ -22,52 +22,48 @@
       <div id="page-wrapper">
           <div class="container-fluid">
               <div class="row">
-                  <div class="col-sm-12">
-                      <h1 class="page-header">使用者管理</h1>
+                  <div class="row col-sm-12">
+                      <h3 class="page-header">使用者管理</h1>
                   </div>
 
                   <!-- /.row -->
                   <div class="row">
-                      <div class="col-sm-12">
+                      <div class="col-sm-12 col-lg-8 col-lg-offset-2">
                           <div class="panel panel-default">
-                              <div class="panel-heading">
-                                  <% if (mode == 'add') { %>新增User<%
+                              <div class="panel-heading"><strong>
+                                  <% if (mode == 'add') { %>新增使用者<%
                                   } else {
-                                  %>修改資料<%
+                                  %>修改使用者資料<%
                                   }
-                                  %>
+                                  %></strong>
                               </div>
                               <!-- panel-body -->
                               <div class="panel-body">
-                                  <form class="form-horizontal" id="addform" method="post">
+                                  <form id="addform" method="post">
                                       <input type="hidden" id="etype" value="<%=mode%>" />
                                       <div class="form-group">
-                                          <label for="username" class="col-sm-2 control-label"><span id="needs"> * </span>UserName</label>
-                                          <div class="col-sm-10">
-                                              <% if (mode == 'add') {%>
-                                              <input type="text" class="form-control" id="email" name="email" placeholder="EMail" value="<%= email%>">
-                                              <%
-                                              } else {
-                                              %><label class="control-label"><%= email %></label><%
-                                              }
-                                              %>
-                                              <p class="help-block">6-20個字元的英數字母混合</p>
-                                          </div>
+                                          <label for="email" class="control-label"><span class="needs"> * </span>登入帳號</label>
+                                          <% if (mode == 'add') {%>
+                                          <input type="text" class="form-control" id="email" name="email" placeholder="E-mail" value="<%= email%>" title="6-20個字元的英數字母混合">
+                                          <%
+                                          } else {
+                                          %><input type="text" class="form-control" id="email" name="email" placeholder="EMail" value="<%= email%>" readonly="readonly"><%
+                                          }
+                                          %>
+                                          <p class="help-block"><small>僅限米蘭的Email Address</small></p>
                                       </div>
                                       <div class="form-group">
-                                          <label for="nickname" class="col-sm-2 control-label">NickName</label>
-                                          <div class="col-sm-10">
-                                              <input type="text" class="form-control" id="nickname" name="nickname" placeholder="NickName" value="<%= nickname%>">
-                                          </div>
+                                          <label for="nickname" class="control-label"><span class="needs"> * </span>NickName</label>
+                                          <input type="text" class="form-control" id="nickname" name="nickname" placeholder="NickName" value="<%= nickname%>">
+                                          <p class="help-block"><small>就是暱稱</small></p>
                                       </div>
                                       <div class="form-group">
-                                          <label for="password" class="col-sm-2 control-label">權限</label>
-                                          <div class="col-sm-10">
-                                              <select class="form-control input-sm role-select" name="role">
-                                                <option value='member' <%=(role == 'member') ? 'selected' : ''%>>實驗室成員</option>
-                                                <option value='admin' <%=(role == 'admin') ? 'selected' : ''%>>管理者</option>
-                                              </select>
-                                          </div>
+                                          <label for="password" class="control-label">權限</label>
+                                          <select class="form-control role-select" name="role">
+                                            <option value='member' <%=(role == 'member') ? 'selected' : ''%>>實驗室成員</option>
+                                            <option value='admin' <%=(role == 'admin') ? 'selected' : ''%>>管理者</option>
+                                          </select>
+                                          <p class="help-block"><small>管理者具有所有全部權限</small></p>
                                       </div>
                                       <div class="col-sm-12">
                                           <div class="col-sm-2 col-xs-0"></div>
@@ -104,6 +100,11 @@ $(onReady);
 function onReady() {
   $("#addform").on("submit", onSubmit);
   $("#clear_btn").on("click", onClear);
+
+  $('#email').tooltipster({
+    theme: 'tooltipster-shadow',
+    side: ['bottom','left']
+  });
 };
 function onSubmit(e) {
   e.preventDefault();
@@ -111,17 +112,21 @@ function onSubmit(e) {
   var email = $("#email").val() || "";
   email = validator.trim(email);
 
-  //var pwd = validator.trim($("#password").val());
   var nname = validator.trim($("#nickname").val());
   if ($("#etype").val() == "add") {
     if (! validator.isEmail(email)) {
-      pageAlert.showError("無效的Email");
+      pageAlert.showError({"text":"無效的Email"});
+      //$("#email").addClass("has-error");
       return;
     }
     if (email.indexOf("@medialand.tw") < 0) {
-      pageAlert.showError("要用medialand的email才行喔!");
+      pageAlert.showError({"text":"要用medialand的email才行喔!"});
       return;
     }
+  }
+  if (nname == "") {
+    pageAlert.showError({"text":"請填寫NickName"});
+    return;
   }
   $("#addform").off("submit");
   $("#addform").submit();
