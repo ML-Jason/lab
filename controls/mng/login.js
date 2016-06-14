@@ -1,4 +1,5 @@
 var usersModel = require('../../models/users.js');
+var psession = require('../../lib/page_session.js');
 var vpath = '';
 
 module.exports = function(app) {
