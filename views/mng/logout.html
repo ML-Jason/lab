@@ -23,7 +23,7 @@
 function signOut() {
   var auth2 = gapi.auth2.getAuthInstance();
   auth2.signOut().then(function () {
-    pageAlert.show({'title':'已登出'},'success', function(confirm) {
+    pageAlert.show({'title':'已登出','type':'success'}, function(confirm) {
       location.replace(vpath + '/mng/login');
     });
   });
