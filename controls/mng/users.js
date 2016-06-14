@@ -146,7 +146,7 @@ function addUserPost(req, res) {
 		'role' : req.body.role
 	}
 
-	req.checkBody('email', '無效的Email').isEmail();
+	req.checkBody('email', '無效的Email').isEmail().isMedialandEmail();
 	req.checkBody('nickname', 'NickName為必填').notEmpty();
 	req.checkBody('role', '權限為必填').notEmpty();
 
@@ -154,23 +154,29 @@ function addUserPost(req, res) {
 	var _ps = {};
 	if (errors) {
 		var errmsg = '';
+		var errprop = '';
 		for (var i= 0;i < errors.length; i++) {
-			errmsg += errors[i].msg + '\n';
+			if (i !=0) {
+				errprop += ',';
+				errmsg += '\n';
+			}
+			errprop += errors[i].param;
+			errmsg += errors[i].msg;
 		}
 		_ps = {
 			'path' : vpath + '/mng/users/add',
-			'page_alert' : { 'text': errmsg },
+			'page_alert' : { 'text': errmsg , 'errprop':errprop},
 			'email' : _user.email,
 			'nickname' : _user.nickname,
 			'role' : _user.role
 		}
 		psession.set(req, _ps);
-    	return res.redirect(vpath + '/mng/users/add');
-  	}
-  	usersModel.findOne({'email':_user.email}, '_id', function(err, data) {
-  		if (! err) {
-  			if(data) {
-  				_ps = {
+    return res.redirect(vpath + '/mng/users/add');
+  }
+  usersModel.findOne({'email':_user.email}, '_id', function(err, data) {
+  	if (! err) {
+  		if(data) {
+  			_ps = {
 					'path' : vpath + '/mng/users/add',
 					'page_alert' : { 'text': '這個Email已經存在了!' },
 					'email' : _user.email,
@@ -178,28 +184,28 @@ function addUserPost(req, res) {
 					'role' : _user.role
 				}
 				psession.set(req, _ps);
-    			return res.redirect(vpath + '/mng/users/add');
-  			}
-  			usersModel.create(_user, function(err, data) {
-  				_ps = {
-		  			'path' : vpath + '/mng/users',
-		  			'page_alert' : { 'text': '新增成功', 'type':'success' }
-		  		}
-		  		psession.set(req, _ps);
+    		return res.redirect(vpath + '/mng/users/add');
+  		}
+  		usersModel.create(_user, function(err, data) {
+  			_ps = {
+		  		'path' : vpath + '/mng/users',
+		  		'page_alert' : { 'text': '新增成功', 'type':'success' }
+		  	}
+		  	psession.set(req, _ps);
 				return res.redirect(vpath + '/mng/users');
-		  	});
-  		} else {
-	  		_ps = {
+		  });
+  	} else {
+	  	_ps = {
 				'path' : vpath + '/mng/users/add',
 				'page_alert' : { 'text': JSON.stringify(err) },
 				'email' : _user.email,
 				'nickname' : _user.nickname,
 				'role' : _user.role
 			}
-	  		psession.set(req, _ps);
+	  	psession.set(req, _ps);
 			return res.redirect(vpath + '/mng/users');
 		}
-  	});
+  });
 }
 
 /*

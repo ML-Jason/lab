@@ -186,6 +186,7 @@ var cssfiles_conf = [
           'sweetalert2.min.css',
           'tooltipster.bundle.min.css',
           'themes/tooltipster-sideTip-shadow.min.css',
+          'themes/tooltipster-sideTip-shadow-type1.css',
           'global.css'
       ],
       'dist_dir' : './public/css/',

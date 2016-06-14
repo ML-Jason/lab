@@ -2,139 +2,165 @@
 <html lang="en">
 
 <head>
-  <% include ./head.html %>
-  <style>
-  .needs {
-      color: red;
-      font-weight: bold;
-      font-size: 16px;
-  }
-  </style>
-  
+	<% include ./head.html %>
+	<style>
+	.needs {
+			color: red;
+			font-weight: bold;
+			font-size: 16px;
+	}
+	</style>
+	
 </head>
 
 <body>
-  <div id="wrapper">
+	<div id="wrapper">
+		<% include ./nav.html %>
+		<!-- Page Content -->
+		<div id="page-wrapper">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="row col-sm-12">
+						<h3 class="page-header">使用者管理</h1>
+					</div>
 
-      <% include ./nav.html %>
+					<!-- /.row -->
+					<div class="row">
+						<div class="col-sm-12 col-lg-8 col-lg-offset-2">
+							<div class="panel panel-default">
+								<div class="panel-heading"><strong>
+										<% if (mode == 'add') { %>新增使用者<%
+										} else {
+										%>修改使用者資料<%
+										}
+										%></strong>
+								</div>
+								<!-- panel-body -->
+								<div class="panel-body">
+									<form id="addform" method="post">
+										<input type="hidden" id="etype" value="<%=mode%>" />
+										<div class="form-group has-feedback email-group">
+											<label for="email" class="control-label"><span class="needs"> * </span>登入帳號</label>
+											<% if (mode == 'add') {%>
+											<input type="text" class="form-control" id="email" name="email" placeholder="E-mail" value="<%= email%>">
+											<%
+											} else {
+											%><input type="text" class="form-control" id="email" name="email" placeholder="EMail" value="<%= email%>" readonly="readonly"><%
+											}
+											%>
+											<p class="help-block"><small>僅限米蘭的Email Address</small></p>
+										</div>
+										<!--<label for="nickname" class="control-label"><span class="needs"> * </span>NickName</label>-->
+										<div class="form-group has-feedback nickname-group"><!--has-error-->
+											<label for="nickname" class="control-label"><span class="needs"> * </span>NickName</label>
+											<input type="text" class="form-control" id="nickname" name="nickname" placeholder="NickName" value="<%= nickname%>" >
+											<!--<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>-->
+											<!--<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>-->
+											<p class="help-block"><small>就是暱稱</small></p>
+										</div>
+										<div class="form-group role-group">
+											<label for="password" class="control-label">權限</label>
+											<select class="form-control role-select" name="role">
+												<option value='member' <%=(role == 'member') ? 'selected' : ''%>>實驗室成員</option>
+												<option value='admin' <%=(role == 'admin') ? 'selected' : ''%>>管理者</option>
+											</select>
+											<p class="help-block"><small>管理者具有所有全部權限</small></p>
+										</div>
+										<div class="col-sm-12">
+											<div class="col-sm-2 col-xs-0"></div>
+											<div class="col-sm-4 col-xs-6">
+													<button type="submit" class="btn btn-success btn-block">Send</button>
+											</div>
+											<div class="col-sm-4 col-xs-6">
+													<button type="button" class="btn btn-default btn-block" id="back_btn">Back</button>
+											</div>
+										</div>
+									</form>
+								</div>
+								<!-- panel-body -->
+							</div>
+						</div>
+					</div>
+					<!-- /.row -->
+				</div>
+			</div>
+			<!-- /.container-fluid -->
+		</div>
+		<!-- /#page-wrapper -->
 
-      <!-- Page Content -->
-      <div id="page-wrapper">
-          <div class="container-fluid">
-              <div class="row">
-                  <div class="row col-sm-12">
-                      <h3 class="page-header">使用者管理</h1>
-                  </div>
+	</div>
+	<!-- /#wrapper -->
 
-                  <!-- /.row -->
-                  <div class="row">
-                      <div class="col-sm-12 col-lg-8 col-lg-offset-2">
-                          <div class="panel panel-default">
-                              <div class="panel-heading"><strong>
-                                  <% if (mode == 'add') { %>新增使用者<%
-                                  } else {
-                                  %>修改使用者資料<%
-                                  }
-                                  %></strong>
-                              </div>
-                              <!-- panel-body -->
-                              <div class="panel-body">
-                                  <form id="addform" method="post">
-                                      <input type="hidden" id="etype" value="<%=mode%>" />
-                                      <div class="form-group">
-                                          <label for="email" class="control-label"><span class="needs"> * </span>登入帳號</label>
-                                          <% if (mode == 'add') {%>
-                                          <input type="text" class="form-control" id="email" name="email" placeholder="E-mail" value="<%= email%>" title="6-20個字元的英數字母混合">
-                                          <%
-                                          } else {
-                                          %><input type="text" class="form-control" id="email" name="email" placeholder="EMail" value="<%= email%>" readonly="readonly"><%
-                                          }
-                                          %>
-                                          <p class="help-block"><small>僅限米蘭的Email Address</small></p>
-                                      </div>
-                                      <div class="form-group">
-                                          <label for="nickname" class="control-label"><span class="needs"> * </span>NickName</label>
-                                          <input type="text" class="form-control" id="nickname" name="nickname" placeholder="NickName" value="<%= nickname%>">
-                                          <p class="help-block"><small>就是暱稱</small></p>
-                                      </div>
-                                      <div class="form-group">
-                                          <label for="password" class="control-label">權限</label>
-                                          <select class="form-control role-select" name="role">
-                                            <option value='member' <%=(role == 'member') ? 'selected' : ''%>>實驗室成員</option>
-                                            <option value='admin' <%=(role == 'admin') ? 'selected' : ''%>>管理者</option>
-                                          </select>
-                                          <p class="help-block"><small>管理者具有所有全部權限</small></p>
-                                      </div>
-                                      <div class="col-sm-12">
-                                          <div class="col-sm-2 col-xs-0"></div>
-                                          <div class="col-sm-4 col-xs-6">
-                                              <button type="submit" class="btn btn-success btn-block">Send</button>
-                                          </div>
-                                          <div class="col-sm-4 col-xs-6">
-                                              <button type="button" class="btn btn-default btn-block" id="clear_btn">Clear</button>
-                                          </div>
-                                      </div>
-                                  </form>
-                              </div>
-                              <!-- panel-body -->
-                          </div>
-                      </div>
-                  </div>
-                  <!-- /.row -->
-              </div>
-          </div>
-          <!-- /.container-fluid -->
-      </div>
-      <!-- /#page-wrapper -->
-
-  </div>
-  <!-- /#wrapper -->
-
-  <% include ./pagealert.html %>
+	<% include ./pagealert.html %>
 </body>
 
 </html>
 <script src="<%=vpath%>/js/validators.js"></script>
 <script>
+window.onbeforeunload = function(e) {
+	//console.log(e);
+	//e.preventDefault();
+	//return 'haha';
+}
 $(onReady);
 function onReady() {
-  $("#addform").on("submit", onSubmit);
-  $("#clear_btn").on("click", onClear);
+	$("#addform").on("submit", onSubmit);
+	$("#back_btn").on("click", onBack);
 
-  $('#email').tooltipster({
-    theme: 'tooltipster-shadow',
-    side: ['bottom','left']
-  });
+	/*$('#email').tooltipster({
+		theme: ['tooltipster-shadow','tooltipster-shadow-type1'],
+		side: 'bottom'
+	});
+	$('#email').tooltipster({
+		theme: ['tooltipster-shadow','tooltipster-shadow-error'],
+		side: 'left',
+		content: 'second one',
+		multiple: true
+	});
+	var instances = $.tooltipster.instances($('#email'));
+	instances[1].open();*/
+	var errprop = $("#pagealertdata").attr("data-errprop");
+	if (errprop) {
+		var errs = errprop.split(",");
+		for (var i = 0;i < errs.length; i++) {
+			$("."+errs[i]+"-group").addClass("has-error");
+		}
+	}
 };
 function onSubmit(e) {
-  e.preventDefault();
+	e.preventDefault();
 
-  var email = $("#email").val() || "";
-  email = validator.trim(email);
+	var email = $("#email").val() || "";
+	email = validator.trim(email);
 
-  var nname = validator.trim($("#nickname").val());
-  if ($("#etype").val() == "add") {
-    if (! validator.isEmail(email)) {
-      pageAlert.showError({"text":"無效的Email"});
-      //$("#email").addClass("has-error");
-      return;
-    }
-    if (email.indexOf("@medialand.tw") < 0) {
-      pageAlert.showError({"text":"要用medialand的email才行喔!"});
-      return;
-    }
-  }
-  if (nname == "") {
-    pageAlert.showError({"text":"請填寫NickName"});
-    return;
-  }
-  $("#addform").off("submit");
-  $("#addform").submit();
+	var nname = validator.trim($("#nickname").val());
+	if ($("#etype").val() == "add") {
+		if (! validator.isEmail(email)) {
+			pageAlert.showError({"text":"無效的Email"});
+			$(".email-group").addClass("has-error");
+			return;
+		}
+		if (email.indexOf("@medialand.tw") < 0) {
+			pageAlert.showError({"text":"要用medialand的email才行喔!"});
+			$(".email-group").addClass("has-error");
+			return;
+		}
+	}
+	if (nname == "") {
+		pageAlert.showError({"text":"請填寫NickName"});
+		$(".nickname-group").addClass("has-error");
+		return;
+	}
+	$("#addform").off("submit");
+	$("#addform").submit();
+}
+function onBack() {
+	history.go(-1);
 }
 function onClear() {
-  if ($("#etype").val() == "add")
-      $("#username").val("");
-  $("#nickname").val("");
-  $("#password").val("");
+	if ($("#etype").val() == "add")
+			$("#username").val("");
+	$("#nickname").val("");
+	$("#password").val("");
 }
 </script>
