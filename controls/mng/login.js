@@ -7,7 +7,6 @@ module.exports = function(app) {
 	app.get(vpath + '/mng/login', onGet);
 	//app.post(vpath + '/mng/login', onPost);
 }
-
 function onGet(req, res) {
 	var session = psession.get(req);
 	var renderdata = {
