@@ -52,7 +52,8 @@ function onSignIn(googleUser) {
       signOut();
       pageAlert.showError({"title":_obj.message});
     } else {
-      location.replace(vpath + '/mng/users/');
+      var _path = Cookies.get("_path") || vpath + '/mng/users';
+      location.replace(_path);
     }
   };
   xhr.send('idtoken=' + id_token);

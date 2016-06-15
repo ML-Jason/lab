@@ -47,6 +47,7 @@ var jsfiles_conf = [
           'bootstrap.min.js',
           'metisMenu.min.js',
           'sb-admin-2.js',
+          'js.cookie.js',
           'tooltipster.bundle.min.js',
           'sweetalert2.min.js',
           'pagealert.js',

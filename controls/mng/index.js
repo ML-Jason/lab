@@ -13,8 +13,10 @@ module.exports = function(app) {
 		}
 		if (! secure.isLogin(req))
 			res.redirect(vpath + '/mng/login');
-		else
+		else {
+			res.cookie('_path', path);
 			next();
+		}
 	});
 
 	app.all(vpath + '/mng/', function(req,res) {
@@ -27,6 +29,7 @@ module.exports = function(app) {
 
 	app.all(vpath + '/mng/logout', function(req, res) {
 		secure.logout(req, res);
+		res.cookie('_path', '');
 		var _rdata = pagedata.getData(req);
 		_rdata.head.title = '登出';
 		res.render('mng/logout', _rdata);
