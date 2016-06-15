@@ -3,9 +3,8 @@ var app = express();
 //app.enable('trust proxy')
 var port = process.env.PORT || 3001;
 process.env.NODE_ENV = app.get('env');
+process.env.VPATH = '/jason';
 console.log('NODE_ENV='+process.env.NODE_ENV);
-
-app.locals.vpath = '/jason';
 
 //view engine
 require('./lib/viewEngine.js')(app);
@@ -17,10 +16,10 @@ var helmet = require('helmet');
 app.use(helmet());
 
 //set static dirs
-if (app.locals.vpath == '')
+if (process.env.VPATH == '')
 	app.use(express.static('./public'));
 else
-	app.use(app.locals.vpath,express.static('./public'));
+	app.use(process.env.VPATH,express.static('./public'));
 
 //set middlewares
 var bodyParser = require('body-parser');
@@ -36,7 +35,7 @@ app.use(require('cookie-parser')());
 //use session
 var session = require('express-session');
 app.use(session({
-	secret: 'express_p1',
+	secret: 'lab_web',
 	resave: true,
 	saveUninitialized: true,
 	cookie: {},

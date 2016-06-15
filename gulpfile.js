@@ -26,71 +26,9 @@ function watch_change_handler( event ){
       browserSync.reload();    
   }    
 }
-function date_now_format(){    
-  var date = new Date();
-  return date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes();
-}
-function dev_time_format( pTime ){    
-  var sec = pTime / 1000 | 0;
-  var min = sec / 60 | 0;
-  var hour = min / 60 | 0;
-  return hour +"h " + (min%60) +"m " + (sec%60) +"s";
-}
 function taskLog( pTask ){    
   console.log( ('---------------------------------------------' + pTask ).yellow );
 }
-
-/*
-██     ██ ████████  ████████     ███    ████████ ████████         ████████ ████ ██     ██ ████████ 
-██     ██ ██     ██ ██     ██   ██ ██      ██    ██                  ██     ██  ███   ███ ██       
-██     ██ ██     ██ ██     ██  ██   ██     ██    ██                  ██     ██  ████ ████ ██       
-██     ██ ████████  ██     ██ ██     ██    ██    ██████              ██     ██  ██ ███ ██ ██████   
-██     ██ ██        ██     ██ █████████    ██    ██                  ██     ██  ██     ██ ██       
-██     ██ ██        ██     ██ ██     ██    ██    ██                  ██     ██  ██     ██ ██       
-███████  ██        ████████  ██     ██    ██    ████████ ███████    ██    ████ ██     ██ ████████ 
-*/
-gulp.task('update_time', function() {
-  taskLog('update_time');
-  var stopTime = new Date().getTime();
-  var elapTime = stopTime - startTime;
-  startTime = stopTime;
-  return gulp.src('./config.json')
-      .pipe( jeditor(function (json){    
-          if ( !json.startTime || json.startTime == '') {
-              json.startTime = date_now_format();
-          }            
-          json._devTime += elapTime;
-          json.devTime = dev_time_format( json._devTime );
-          return json;
-      }))
-      .pipe( gulp.dest("./") );
-});
-
-/*
-████ ██    ██ ████ ████████ 
-██  ███   ██  ██     ██    
-██  ████  ██  ██     ██    
-██  ██ ██ ██  ██     ██    
-██  ██  ████  ██     ██    
-██  ██   ███  ██     ██    
-████ ██    ██ ████    ██    
-*/
-gulp.task('init', function() {    
-  taskLog('init');         
-  fs.exists('./config.json',function ( exists ){    
-      if ( !exists) {
-          var config = {
-              _devTime  :0,
-              startTime :date_now_format()                
-          }
-          fs.writeFile('config.json', JSON.stringify(config), function(err) {
-              if (err) 
-                  throw err;
-              console.log('It\'s saved!');
-          });
-      }
-  })
-});
 
 /*
    ██╗███████╗
@@ -243,20 +181,7 @@ gulp.task('scss', function() {
       .pipe( browserSync.stream( {match: '**/*.css'} )); 
 });
 
-/*
-██████╗██╗  ██╗███████╗██████╗ ██╗████████╗ ██████╗ ██████╗ 
-██╔════╝██║ ██╔╝██╔════╝██╔══██╗██║╚══██╔══╝██╔═══██╗██╔══██╗
-██║     █████╔╝ █████╗  ██║  ██║██║   ██║   ██║   ██║██████╔╝
-██║     ██╔═██╗ ██╔══╝  ██║  ██║██║   ██║   ██║   ██║██╔══██╗
-╚██████╗██║  ██╗███████╗██████╔╝██║   ██║   ╚██████╔╝██║  ██║
-╚═════╝╚═╝  ╚═╝╚══════╝╚═════╝ ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝
-*/
-gulp.task('ckeditor', function() {
-  taskLog('ckeditor');
-  return gulp.src( './src/js/ckeditor/**')
-      .pipe( gulpPlumber() )
-      .pipe(gulp.dest( './public/js/ckeditor' ));
-});
+
 /*
 ██     ██ ████████ ██     ██ ██       
 ██     ██    ██    ███   ███ ██       

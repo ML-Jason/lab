@@ -1,9 +1,10 @@
 var models = require('../../models/models.js');
 var secure = require('../../lib/secure.js');
-var vpath = '';
+//var psession = require('../../lib/page_session.js');
+var pagedata = require('../../lib/pagedata.js');
+var vpath = process.env.VPATH;
 
 module.exports = function(app) {
-	vpath = app.locals.vpath;
 	app.all(vpath + '/mng/*', function(req, res, next) {
 		var path = req.path;
 		if (path.indexOf(vpath + '/mng/login') >= 0) {
@@ -26,10 +27,8 @@ module.exports = function(app) {
 
 	app.all(vpath + '/mng/logout', function(req, res) {
 		secure.logout(req, res);
-		var renderdata = {
-			'vpath': vpath,
-			'page_title': '登出'
-		};
-		res.render('mng/logout.html', renderdata);
+		var _rdata = pagedata.getData(req);
+		_rdata.head.title = '登出';
+		res.render('mng/logout', _rdata);
 	});
 }

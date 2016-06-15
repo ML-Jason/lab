@@ -6,13 +6,13 @@
 
 <body>    
   <div class="container">
-      <div class="row">
-          <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
-              <div class="login-panel panel panel-default" style="display:none">
-                <div class="g-signin2" data-longtitle="true" data-onsuccess="signOut"></div>
-              </div>
-          </div>
-      </div>
+	  <div class="row">
+		  <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+			  <div class="login-panel panel panel-default" style="display:none">
+				<div class="g-signin2" data-longtitle="true" data-onsuccess="signOut"></div>
+			  </div>
+		  </div>
+	  </div>
   </div>
 
   <% include ./pagealert.html %>
@@ -23,9 +23,9 @@
 function signOut() {
   var auth2 = gapi.auth2.getAuthInstance();
   auth2.signOut().then(function () {
-    pageAlert.show({'title':'已登出','type':'success'}, function(confirm) {
-      location.replace(vpath + '/mng/login');
-    });
+	pageAlert.show({'title':'已登出','type':'success'}, function(confirm) {
+	  location.replace(vpath + '/mng/login');
+	});
   });
 }
 </script>
