@@ -53,6 +53,7 @@ function onSignIn(googleUser) {
       pageAlert.showError({"title":_obj.message});
     } else {
       var _path = Cookies.get("_path") || vpath + '/mng/users';
+      //console.log(_path);
       location.replace(_path);
     }
   };

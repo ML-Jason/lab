@@ -1,0 +1,22 @@
+.dragunit:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+.dragcontainer {
+	position: relative;
+}
+.dragtmp {
+	opacity: .8;
+	border-style: dashed;
+    border-width: 1px;
+    border-color: gray;
+    display: none;
+}
+.dragged {
+	position: absolute;
+	display: none;
+	opacity: .5;
+}

@@ -1,0 +1,59 @@
+.jfile_box {
+	min-height: 30px;
+	border-style: dashed;
+    border-width: 2px;
+    border-color: #92b0b3;
+    margin: 5px;
+    padding: 5px;
+    text-align: center;
+    color: #0f3c4b;
+    font-weight: bold;
+    cursor: pointer;
+}
+.jfile_unit {
+	padding: 5px;
+	border-bottom: 1px solid;
+	border-color: #DDDDDD;
+}
+.jfile_unit:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+.jfile_unit > div {
+	position: relative;
+	float: left;
+}
+.jfile_thum {
+   	width: 100%;
+   	max-height: 100px;
+	min-height: 50px;
+	text-align: center;
+	line-height: 100px;
+}
+.jfile_info {
+   	width: 100%;
+	padding: 5px;
+}
+@media (min-width: 400px) {
+	.jfile_thum {
+    	width: 20%;
+	}
+	.jfile_info {
+    	width: 80%;
+		padding: 5px;
+	}
+}
+.jfile_thum  img {
+	max-height: 100px;
+	max-width: 100px;
+	cursor: pointer;
+}
+.jfile_info_filename {
+	overflow: auto;
+}
+.progress {
+	margin-bottom: 0;
+}

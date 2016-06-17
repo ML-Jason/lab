@@ -1,6 +1,5 @@
 var models = require('../../models/models.js');
 var secure = require('../../lib/secure.js');
-//var psession = require('../../lib/page_session.js');
 var pagedata = require('../../lib/pagedata.js');
 var vpath = process.env.VPATH;
 

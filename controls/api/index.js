@@ -4,6 +4,8 @@ var https = require('https');
 
 module.exports = function(app) {
 	app.all(process.env.VPATH + '/api/tokensignin', tokensignin);
+
+	require('./upload.js')(app);
 }
 
 function tokensignin(req, res) {
