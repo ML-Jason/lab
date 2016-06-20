@@ -5,6 +5,7 @@ module.exports = function(app) {
 }
 
 function onUpload(req, res) {
+	console.log(req.cookies);
 	var form = new formidable.IncomingForm();
 	form.encoding = 'utf-8';
 	form.multiples = true;

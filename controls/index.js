@@ -17,6 +17,11 @@ module.exports = function(app) {
 		var _rdata = pagedata.getData(req);
 		res.render('mng/upload', _rdata);
 	});
+	app.all(process.env.VPATH + '/kindergarten', function(req, res) {
+		var _rdata = pagedata.getData(req);
+		_rdata.head.title = "台北市幼稚園地圖";
+		res.render('kindergarten', _rdata);
+	});
 
 	app.use(http500);
 	app.use(http404);

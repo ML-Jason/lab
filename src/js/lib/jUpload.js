@@ -11,11 +11,13 @@
 var jupload = new jUpload({
 	"target":"#file1",
 	"uploadURL":"/jason/api/upload",
-	"allowfiles":"jpg,png,gif,jpeg,bmp"
+	"allowfiles":"jpg,png,gif,jpeg,bmp",
+	"multiple":fasle
 });
 target : 要被置放的DOM
 uploadURL : 上傳檔案的url
 allowfiles : 可允許上傳的副檔名
+multiple : 是否允許多檔上傳 (預設是true)
 
 jupload.on("change", function(e) {});
 檔案改變的事件
@@ -38,6 +40,7 @@ jupload.add([
 		this.target = "";
 		this.allowfiles = "jpg,png,gif,jpeg,bmp";
 		this.uploadURL = "";
+		this.multiple = true;
 
 		var _context = '<div class="jfile_box">點選或是拖拉檔案到此</div>'
 	        	+'	<input type="file" name="jfile" class="jfile_file_btn" multiple="multiple" style="display:none;">'
@@ -80,6 +83,8 @@ jupload.add([
 
 			_this = this;
 			$(_this.target).empty().append($(_context));
+			if (! _this.multiple)
+				$(".jfile_file_btn").removeAttr("multiple");
 			$(_this.target + " .jfile_file_btn").on("change", onFiles);
 			_cloneunit = $(_cloneunit);
 
@@ -126,8 +131,13 @@ jupload.add([
                     'name' : efiles[i].name,
                     '_id' : Date.now() + '_' + Math.round(Math.random()*100000)
                 }
-                _files.push(_file);
                 var _dom = _cloneunit.clone().addClass('id_'+_file._id);
+                if (_this.multiple) {
+                	_files.push(_file);
+                } else {
+                	_files = [_file];
+                	$(_this.target+" .jfile_unitcontainer").empty();
+                }
                 $(_dom).appendTo($(_this.target+" .jfile_unitcontainer")).fadeIn();
                 $(".id_"+_file._id+" .jfile_info_filename").html(_file.name);
                 var _ext = _file.name.split(".")[_file.name.split(".").length-1];
@@ -138,6 +148,8 @@ jupload.add([
                 $(".id_"+_file._id+" .jfile_cancel_btn").on("click", onCancelClick);
                 $(".id_"+_file._id+" .jfile_upload_btn").hide();
                 $(".id_"+_file._id+" .progress-bar").css("width","100%");
+                $(".id_"+_file._id+" .progress-bar").removeClass("progress-bar-success").addClass("progress-bar-info");
+                $(".id_"+_file._id+" .progress").removeClass("active progress-striped").css("height",5);
             }
             var event = new Event('change');
             event.files = _files;
@@ -150,7 +162,10 @@ jupload.add([
                 if (_this.allowfiles.indexOf(_ext) >= 0) {
                     pfs[i]._show = false;
                     pfs[i]._upload = false;
-                    _files.push(pfs[i]);
+                    if (_this.multiple)
+                    	_files.push(pfs[i]);
+                    else
+                    	_files = [pfs[i]];
                 } else {
                     _wrong.push(pfs[i].name);
                 }
@@ -165,6 +180,9 @@ jupload.add([
                 if (! _file._show) {
                     _file._id = Date.now() + '_' + Math.round(Math.random()*100000);
                     var _dom = _cloneunit.clone().addClass('id_'+_file._id);
+                    if (!_this.multiple)
+                    	$(_this.target+" .jfile_unitcontainer").empty();
+
                     $(_dom).appendTo($(_this.target+" .jfile_unitcontainer")).fadeIn();
                     $(".id_"+_file._id+" .jfile_info_filename").html(_file.name);
                     $(".id_"+_file._id+" .jfile_info_filesize").html(Math.floor(_file.size/1000)+' KB');
@@ -252,6 +270,8 @@ jupload.add([
             $(_this.target+" .progress-bar").eq(index).css({'width' : percent + '%'});
             if (percent == 100) {
                 $(_this.target+" .jfile_upload_btn").eq(index).fadeOut();
+                $(_this.target+" .progress-bar").removeClass("progress-bar-success").addClass("progress-bar-info");
+                $(_this.target+" .progress").removeClass("active progress-striped").css("height",5);
             }
             var event = new Event('progress');
             event.percent = percent;
