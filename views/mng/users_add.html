@@ -29,40 +29,29 @@
 						<div class="col-sm-12 col-lg-8 col-lg-offset-2">
 							<div class="panel panel-default">
 								<div class="panel-heading"><strong>
-										<% if (mode == 'add') { %>新增使用者<%
-										} else {
-										%>修改使用者資料<%
-										}
-										%></strong>
+										<%=(content.mode == 'add') ? '新增使用者' : '修改使用者資料'%></strong>
 								</div>
 								<!-- panel-body -->
 								<div class="panel-body">
 									<form id="addform" method="post">
-										<input type="hidden" id="etype" value="<%=mode%>" />
+										<input type="hidden" id="etype" value="<%=content.mode%>" />
 										<div class="form-group has-feedback email-group">
 											<label for="email" class="control-label"><span class="needs"> * </span>登入帳號</label>
-											<% if (mode == 'add') {%>
-											<input type="text" class="form-control" id="email" name="email" placeholder="E-mail" value="<%= email%>">
-											<%
-											} else {
-											%><input type="text" class="form-control" id="email" name="email" placeholder="EMail" value="<%= email%>" readonly="readonly"><%
-											}
-											%>
+											<input type="text" class="form-control" id="email" name="email" placeholder="EMail" value="<%=content.email%>" <%=(content.mode!='add') ? 'readonly="readonly"' : ''%> >
 											<p class="help-block"><small>僅限米蘭的Email Address</small></p>
 										</div>
-										<!--<label for="nickname" class="control-label"><span class="needs"> * </span>NickName</label>-->
 										<div class="form-group has-feedback nickname-group"><!--has-error-->
 											<label for="nickname" class="control-label"><span class="needs"> * </span>NickName</label>
-											<input type="text" class="form-control" id="nickname" name="nickname" placeholder="NickName" value="<%= nickname%>" >
+											<input type="text" class="form-control" id="nickname" name="nickname" placeholder="NickName" value="<%=content.nickname%>" >
 											<!--<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>-->
 											<!--<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>-->
 											<p class="help-block"><small>就是暱稱</small></p>
 										</div>
 										<div class="form-group role-group">
-											<label for="password" class="control-label">權限</label>
+											<label for="role" class="control-label">權限</label>
 											<select class="form-control role-select" name="role">
-												<option value='member' <%=(role == 'member') ? 'selected' : ''%>>實驗室成員</option>
-												<option value='admin' <%=(role == 'admin') ? 'selected' : ''%>>管理者</option>
+												<option value='member' <%=(content.role == 'member') ? 'selected' : ''%>>實驗室成員</option>
+												<option value='admin' <%=(content.role == 'admin') ? 'selected' : ''%>>管理者</option>
 											</select>
 											<p class="help-block"><small>管理者具有所有全部權限</small></p>
 										</div>
@@ -95,7 +84,7 @@
 </body>
 
 </html>
-<script src="<%=vpath%>/js/validators.js"></script>
+<script src="<%=vpath%>/mng/js/validators.js"></script>
 <script>
 window.onbeforeunload = function(e) {
 	//console.log(e);
@@ -106,6 +95,7 @@ $(onReady);
 function onReady() {
 	$("#addform").on("submit", onSubmit);
 	$("#back_btn").on("click", onBack);
+	$("#email, #nickname, .role-select").on("change", onFormChange);
 
 	/*$('#email').tooltipster({
 		theme: ['tooltipster-shadow','tooltipster-shadow-type1'],
@@ -127,6 +117,11 @@ function onReady() {
 		}
 	}
 };
+function onFormChange() {
+	window.onbeforeunload = function(e) {
+		return "確定要離開這個頁面?";
+	}
+}
 function onSubmit(e) {
 	e.preventDefault();
 
@@ -151,6 +146,7 @@ function onSubmit(e) {
 		$(".nickname-group").addClass("has-error");
 		return;
 	}
+	window.onbeforeunload = null;
 	$("#addform").off("submit");
 	$("#addform").submit();
 }

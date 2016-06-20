@@ -1,17 +1,15 @@
-var vpath = '';
+var pagedata = require('../../lib/pagedata.js');
+var vpath = process.env.VPATH;
 
 module.exports = function(app) {
-	vpath = app.locals.vpath;
 	app.get(vpath + '/mng/ck', onGet);
 	app.post(vpath + '/mng/ck', onPost);
 }
 
 function onGet(req, res) {
-	var _d = {
-		'vpath': vpath,
-		'page_title': 'CKEDitor'
-	}
-	res.render('mng/ckeditor.html', _d);
+	var _rdata = pagedata.getData(req);
+	_rdata.head.title = 'CKEDitor';
+	res.render('mng/ckeditor', _rdata);
 }
 
 function onPost(req, res) {

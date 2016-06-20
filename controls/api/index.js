@@ -3,8 +3,9 @@ var secure = require('../../lib/secure.js');
 var https = require('https');
 
 module.exports = function(app) {
-	var vpath = app.locals.vpath;
-	app.all(vpath + '/api/tokensignin', tokensignin);
+	app.all(process.env.VPATH + '/api/tokensignin', tokensignin);
+
+	require('./upload.js')(app);
 }
 
 function tokensignin(req, res) {
@@ -17,32 +18,32 @@ function tokensignin(req, res) {
 	https.request(options, function(response) {
 		var str = '';
 		response.on('data', function (chunk) {
-  		str += chunk;
+  			str += chunk;
 		});
 		response.on('end', function () {
 			var _obj = {'status':'ERROR', 'message':'Invalid token'};
-      var _data = {};
+      		var _data = {};
 			try {
 				var _data = JSON.parse(str);
-      } catch(e) {}
+      		} catch(e) {}
 			//_data.email
 			//_data.name
 			//_data.picture
 			if (_data.email.indexOf('@medialand.tw') > 0) {
-        usersModel.findOne({'email':_data.email}, '_id', function(err, data) {
-          if (data) {
-            var _logindata = {'_token':_token, '_name':_data.name, '_email':_data.email, '_id':data._id};
-            secure.saveLogin(req, res, _logindata);
-            _obj = {'status':'OK', 'name':_data.name, 'email':_data.email, 'id':data._id};
-            res.send(JSON.stringify(_obj));
-          } else {
-            _obj = {'status':'ERROR', 'message':'未知的錯誤'};
-            res.send(JSON.stringify(_obj));
-          }
-        });
+        		usersModel.findOne({'email':_data.email}, '_id', function(err, data) {
+					if (data) {
+						var _logindata = {'_token':_token, '_name':_data.name, '_email':_data.email, '_id':data._id};
+						secure.saveLogin(req, res, _logindata);
+						_obj = {'status':'OK', 'name':_data.name, 'email':_data.email, 'id':data._id};
+						res.send(JSON.stringify(_obj));
+					} else {
+						_obj = {'status':'ERROR', 'message':'未知的錯誤'};
+						res.send(JSON.stringify(_obj));
+					}
+				});
 			} else {
 				_obj = {'status':'ERROR', 'message':'不是實驗室成員'};
-        res.send(JSON.stringify(_obj));
+        		res.send(JSON.stringify(_obj));
 			}
 		});
 	}).end();

@@ -1,150 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-		<% include ./head.html %>
-		<link href="<%=vpath%>/css/mng/users.css" rel="stylesheet">
+    <% include ./head.html %>
+    <link href="<%=vpath%>/mng/css/users.css" rel="stylesheet">
 </head>
 
 <body>
-		<div id="wrapper">
-				<% include ./nav.html %>
+    <div id="wrapper">
+        <% include ./nav.html %>
+        <!-- Page Content -->
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="row col-sm-12">
+                        <h3 class="page-header">使用者管理</h1>
+                    </div>
 
-				<!-- Page Content -->
-				<div id="page-wrapper">
-						<div class="container-fluid">
-								<div class="row">
-										<div class="row col-sm-12">
-												<h3 class="page-header">使用者管理</h1>
-										</div>
-
-										<!-- /.row -->
-										<div class="row">
-												<div class="col-sm-12">
-														<div class="panel panel-default">
-																<div class="panel-heading">
-																		使用者列表
-																</div>
-																<!-- /.panel-heading -->
-																<div class="panel-body">
-																		<form id="usersform" action="<%=vpath%>/mng/users/del/" method="post">
-																				<div class="form-group form-inline">
-																						<small>總筆數 : <b><%=totalcount%></b> 筆 -- </small>
-																						<small>每頁筆數</small>
-																						<select class="form-control input-sm pagesize-select">
-																								<%
-																								for (var i = 1;i <= 10; i++) {
-																										if (i == pagesize) {
-																										%><option selected><%=i%></option><%
-																										} else {
-																										%><option><%=i%></option><%
-																										}
-																								}
-																								%>
-																						</select>
-																						<small> -- 第幾頁</small>
-																						<select class="form-control input-sm page-select">
-																								<%
-																								for (var i = 1;i <= totalpage; i++) {
-																										if (i == page) {
-																										%><option selected><%=i%></option><%
-																										} else {
-																										%><option><%=i%></option><%
-																										}
-																								}
-																								%>
-																						</select>
-																				</div>
-																				<p>
-																						<button type="button" class="btn btn-outline btn-default btn-xs btn-selectall">全選</button>
-																						<button type="button" class="btn btn-outline btn-danger btn-xs btn-delselect">刪除選取的項目</button>
-																						<a href="<%=vpath%>/mng/users/add/" type="button" class="btn btn-outline btn-primary btn-xs btn-addnew">新增項目</a>
-																				</p>
-																				<div class="table-responsive">
-																						<table class="table table-striped table-bordered table-hover">
-																								<thead>
-																										<tr>
-																												<th class="j-table-checkbox-th">#</th>
-																												<th>EMail</th>
-																												<th>名稱</th>
-																												<th>權限</th>
-																												<th class="j-table-functions-th"></th>
-																										</tr>
-																								</thead>
-																								<tbody>
-																										<% for(var i=0;i<data.length;i++) { %>
-																										<tr>
-																												<td><input type="checkbox" name="uids" class="item-checkbox" value="<%= data[i]._id %>"></td>
-																												<td><%= data[i].email %></td>
-																												<td><%= data[i].nickname %></td>
-																												<td><%= data[i].role %></td>
-																												<td class="j-table-functions-th">
-																														<span>
-																														<a href="<%=vpath%>/mng/users/<%=data[i]._id%>" type="button" class="btn btn-info btn-circle btn-xs btn-edit"><i class="glyphicon glyphicon-pencil"></i></a>
-																														</span><span>
-																														<button type="button" class="btn btn-danger btn-circle btn-xs btn-del"><i class="glyphicon glyphicon-trash"></i></button></span>
-																												</td>
-																										</tr>
-																										<% } %>
-																								</tbody>
-																						</table>
-																				</div>
-																				<p>
-																						<button type="button" class="btn btn-outline btn-default btn-xs btn-selectall">全選</button>
-																						<button type="button" class="btn btn-outline btn-danger btn-xs btn-delselect">刪除選取的項目</button>
-																						<a href="<%=vpath%>/mng/users/add/" type="button" class="btn btn-outline btn-primary btn-xs btn-addnew">新增項目</a>
-																				</p>
-																				<ul class="pager">
-																						<ul class="pagination" totalcount="{{totalcount}}" page="{{page}}" pagesize="{{pagesize}}">
-																								<% if(prev) { %>
-																								<li class="page-prev-btn">
-																										<a href="<%=prev%>" aria-label="Previous">
-																												<span aria-hidden="true">&laquo;</span>
-																										</a>
-																								</li>
-																								<% } else { %>
-																								<li class="page-prev-btn disabled">
-																										<a href="#" aria-label="Previous">
-																												<span aria-hidden="true">&laquo;</span>
-																										</a>
-																								</li>
-																								<% } %>
-																								<!--<li class="active"><a href="#">1</a></li>
-																								<li><a href="#">2</a></li>
-																								<li><a href="#">3</a></li>
-																								<li><a href="#">4</a></li>
-																								<li><a href="#">5</a></li>-->
-																								<% if (next) { %>
-																								<li class="page-next-btn">
-																										<a href="<%=next%>" aria-label="Next">
-																												<span aria-hidden="true">&raquo;</span>
-																										</a>
-																								</li>
-																								<% } else { %>
-																								<li class="page-next-btn disabled">
-																										<a href="#" aria-label="Next">
-																												<span aria-hidden="true">&raquo;</span>
-																										</a>
-																								</li>
-																								<% } %>
-																						</ul>
-																				</ul>
-																				<!-- /.table-responsive -->
-																		</form>
-																</div>
-																<!-- /.panel-body -->
-														</div>
-														<!-- /.panel -->
-												</div>
-										</div>
-										<!-- /.row -->
-								</div>
-						</div>
-						<!-- /.container-fluid -->
-				</div>
-				<!-- /#page-wrapper -->
-		</div>
-		<!-- /#wrapper -->
-		<% include ./pagealert.html %>
+                    <!-- /.row -->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    使用者列表
+                                </div>
+                                <!-- /.panel-heading -->
+                                <div class="panel-body">
+                                    <form id="usersform" action="<%=vpath%>/mng/users/del/" method="post">
+                                        <div class="form-group form-inline">
+                                            <small>總筆數 : <b><%=content.totalcount%></b> 筆 -- </small>
+                                            <small>每頁筆數</small>
+                                            <select class="form-control input-sm pagesize-select">
+                                                <%
+                                                for (var i = 1;i <= 10; i++) {
+                                                    if (i == content.pagesize) {
+                                                    %><option selected><%=i%></option><%
+                                                    } else {
+                                                    %><option><%=i%></option><%
+                                                    }
+                                                }
+                                                %>
+                                            </select>
+                                            <small> -- 第幾頁</small>
+                                            <select class="form-control input-sm page-select">
+                                                <%
+                                                for (var i = 1;i <= content.totalpage; i++) {
+                                                    if (i == content.page) {
+                                                    %><option selected><%=i%></option><%
+                                                    } else {
+                                                    %><option><%=i%></option><%
+                                                    }
+                                                }
+                                                %>
+                                            </select>
+                                        </div>
+                                        <p>
+                                            <button type="button" class="btn btn-outline btn-default btn-xs btn-selectall">全選</button>
+                                            <button type="button" class="btn btn-outline btn-danger btn-xs btn-delselect">刪除選取的項目</button>
+                                            <a href="<%=vpath%>/mng/users/add/" type="button" class="btn btn-outline btn-primary btn-xs btn-addnew">新增項目</a>
+                                        </p>
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="j-table-checkbox-th">#</th>
+                                                        <th>EMail</th>
+                                                        <th>名稱</th>
+                                                        <th>權限</th>
+                                                        <th class="j-table-functions-th"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% for(var i=0;i<content.data.length;i++) { %>
+                                                    <tr>
+                                                        <td><input type="checkbox" name="uids" class="item-checkbox" value="<%= content.data[i]._id %>"></td>
+                                                        <td><%= content.data[i].email %></td>
+                                                        <td><%= content.data[i].nickname %></td>
+                                                        <td><%= content.data[i].role %></td>
+                                                        <td class="j-table-functions-th">
+                                                            <span>
+                                                            <a href="<%=vpath%>/mng/users/<%=content.data[i]._id%>" type="button" class="btn btn-info btn-circle btn-xs btn-edit"><i class="glyphicon glyphicon-pencil"></i></a>
+                                                            </span><span>
+                                                            <button type="button" class="btn btn-danger btn-circle btn-xs btn-del"><i class="glyphicon glyphicon-trash"></i></button></span>
+                                                        </td>
+                                                    </tr>
+                                                    <% } %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <p>
+                                            <button type="button" class="btn btn-outline btn-default btn-xs btn-selectall">全選</button>
+                                            <button type="button" class="btn btn-outline btn-danger btn-xs btn-delselect">刪除選取的項目</button>
+                                            <a href="<%=vpath%>/mng/users/add/" type="button" class="btn btn-outline btn-primary btn-xs btn-addnew">新增項目</a>
+                                        </p>
+                                        <ul class="pager">
+                                            <ul class="pagination">
+                                                <% if(content.prev) { %>
+                                                <li class="page-prev-btn">
+                                                    <a href="<%=content.prev%>" aria-label="Previous">
+                                                        <span aria-hidden="true">&laquo;</span>
+                                                    </a>
+                                                </li>
+                                                <% } else { %>
+                                                <li class="page-prev-btn disabled">
+                                                    <a href="#" aria-label="Previous">
+                                                        <span aria-hidden="true">&laquo;</span>
+                                                    </a>
+                                                </li>
+                                                <% } %>
+                                                <!--<li class="active"><a href="#">1</a></li>
+                                                <li><a href="#">2</a></li>
+                                                <li><a href="#">3</a></li>
+                                                <li><a href="#">4</a></li>
+                                                <li><a href="#">5</a></li>-->
+                                                <% if (content.next) { %>
+                                                <li class="page-next-btn">
+                                                    <a href="<%=content.next%>" aria-label="Next">
+                                                        <span aria-hidden="true">&raquo;</span>
+                                                    </a>
+                                                </li>
+                                                <% } else { %>
+                                                <li class="page-next-btn disabled">
+                                                    <a href="#" aria-label="Next">
+                                                        <span aria-hidden="true">&raquo;</span>
+                                                    </a>
+                                                </li>
+                                                <% } %>
+                                            </ul>
+                                        </ul>
+                                        <!-- /.table-responsive -->
+                                    </form>
+                                </div>
+                                <!-- /.panel-body -->
+                            </div>
+                            <!-- /.panel -->
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+    <% include ./pagealert.html %>
 </body>
 </html>
-<script src="<%=vpath%>/js/mng/users.js"></script>
+<script src="<%=vpath%>/mng/js/users.js"></script>

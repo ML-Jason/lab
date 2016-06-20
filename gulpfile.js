@@ -26,71 +26,9 @@ function watch_change_handler( event ){
       browserSync.reload();    
   }    
 }
-function date_now_format(){    
-  var date = new Date();
-  return date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes();
-}
-function dev_time_format( pTime ){    
-  var sec = pTime / 1000 | 0;
-  var min = sec / 60 | 0;
-  var hour = min / 60 | 0;
-  return hour +"h " + (min%60) +"m " + (sec%60) +"s";
-}
 function taskLog( pTask ){    
   console.log( ('---------------------------------------------' + pTask ).yellow );
 }
-
-/*
-██     ██ ████████  ████████     ███    ████████ ████████         ████████ ████ ██     ██ ████████ 
-██     ██ ██     ██ ██     ██   ██ ██      ██    ██                  ██     ██  ███   ███ ██       
-██     ██ ██     ██ ██     ██  ██   ██     ██    ██                  ██     ██  ████ ████ ██       
-██     ██ ████████  ██     ██ ██     ██    ██    ██████              ██     ██  ██ ███ ██ ██████   
-██     ██ ██        ██     ██ █████████    ██    ██                  ██     ██  ██     ██ ██       
-██     ██ ██        ██     ██ ██     ██    ██    ██                  ██     ██  ██     ██ ██       
-███████  ██        ████████  ██     ██    ██    ████████ ███████    ██    ████ ██     ██ ████████ 
-*/
-gulp.task('update_time', function() {
-  taskLog('update_time');
-  var stopTime = new Date().getTime();
-  var elapTime = stopTime - startTime;
-  startTime = stopTime;
-  return gulp.src('./config.json')
-      .pipe( jeditor(function (json){    
-          if ( !json.startTime || json.startTime == '') {
-              json.startTime = date_now_format();
-          }            
-          json._devTime += elapTime;
-          json.devTime = dev_time_format( json._devTime );
-          return json;
-      }))
-      .pipe( gulp.dest("./") );
-});
-
-/*
-████ ██    ██ ████ ████████ 
-██  ███   ██  ██     ██    
-██  ████  ██  ██     ██    
-██  ██ ██ ██  ██     ██    
-██  ██  ████  ██     ██    
-██  ██   ███  ██     ██    
-████ ██    ██ ████    ██    
-*/
-gulp.task('init', function() {    
-  taskLog('init');         
-  fs.exists('./config.json',function ( exists ){    
-      if ( !exists) {
-          var config = {
-              _devTime  :0,
-              startTime :date_now_format()                
-          }
-          fs.writeFile('config.json', JSON.stringify(config), function(err) {
-              if (err) 
-                  throw err;
-              console.log('It\'s saved!');
-          });
-      }
-  })
-});
 
 /*
    ██╗███████╗
@@ -109,12 +47,16 @@ var jsfiles_conf = [
           'bootstrap.min.js',
           'metisMenu.min.js',
           'sb-admin-2.js',
+          'js.cookie.js',
           'tooltipster.bundle.min.js',
           'sweetalert2.min.js',
           'pagealert.js',
+          'jlightbox.js',
+          'jDragSort.js',
+          'jUpload.js',
           'global.js'
       ],
-      'dist_dir' : './public/js/',
+      'dist_dir' : './public/mng/js/',
       'output_file' : 'common.js'
   },
   {
@@ -123,7 +65,7 @@ var jsfiles_conf = [
           'validator.js',
           'validator_ext.js'
       ],
-      'dist_dir' : './public/js/',
+      'dist_dir' : './public/mng/js/',
       'output_file' : 'validators.js'
   },
   {
@@ -187,9 +129,12 @@ var cssfiles_conf = [
           'tooltipster.bundle.min.css',
           'themes/tooltipster-sideTip-shadow.min.css',
           'themes/tooltipster-sideTip-shadow-type1.css',
+          'jlightbox.css',
+          'jDragSort.css',
+          'jUpload.css',
           'global.css'
       ],
-      'dist_dir' : './public/css/',
+      'dist_dir' : './public/mng/css/',
       'output_file' : 'common.css'
   }
 ];
@@ -208,7 +153,7 @@ gulp.task('css', function() {
           //.pipe( browserSync.stream() );
   });
   gulp.src('./src/css/lib/*.map')
-      .pipe(gulp.dest('./public/css/'));
+      .pipe(gulp.dest('./public/mng/css/'));
   gulp.src(['./src/**/*.css', '!./src/css/lib/**'])
       .pipe(gulpPlumber())
       .pipe(gulp.dest('./public/'));
@@ -244,19 +189,20 @@ gulp.task('scss', function() {
 });
 
 /*
-██████╗██╗  ██╗███████╗██████╗ ██╗████████╗ ██████╗ ██████╗ 
-██╔════╝██║ ██╔╝██╔════╝██╔══██╗██║╚══██╔══╝██╔═══██╗██╔══██╗
-██║     █████╔╝ █████╗  ██║  ██║██║   ██║   ██║   ██║██████╔╝
-██║     ██╔═██╗ ██╔══╝  ██║  ██║██║   ██║   ██║   ██║██╔══██╗
-╚██████╗██║  ██╗███████╗██████╔╝██║   ██║   ╚██████╔╝██║  ██║
-╚═════╝╚═╝  ╚═╝╚══════╝╚═════╝ ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝
+########  #######  ##    ## ########  ######
+##       ##     ## ###   ##    ##    ##    ##
+##       ##     ## ####  ##    ##    ##
+######   ##     ## ## ## ##    ##     ######
+##       ##     ## ##  ####    ##          ##
+##       ##     ## ##   ###    ##    ##    ##
+##        #######  ##    ##    ##     ######
 */
-gulp.task('ckeditor', function() {
-  taskLog('ckeditor');
-  return gulp.src( './src/js/ckeditor/**')
-      .pipe( gulpPlumber() )
-      .pipe(gulp.dest( './public/js/ckeditor' ));
+gulp.task('fonts', function() {
+  taskLog('fonts');
+  return gulp.src('./src/mng/fonts/*.*')
+      .pipe(gulp.dest('./public/mng/fonts/'));
 });
+
 /*
 ██     ██ ████████ ██     ██ ██       
 ██     ██    ██    ███   ███ ██       
@@ -372,6 +318,7 @@ gulp.task('default', [
       'browserSync'*/
       'js',
       'css',
+      'fonts',
       'minijpg',
       'minipng',
       'copy_other_images'

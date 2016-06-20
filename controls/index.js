@@ -1,5 +1,5 @@
 var formidable = require('formidable');
-var express = require('express');
+var pagedata = require('../lib/pagedata.js');
 
 module.exports = function(app) {
 	app.all('/', function(req, res) {
@@ -13,59 +13,14 @@ module.exports = function(app) {
 	require('./mng/')(app);
 	require('./api/')(app);
 
-	
-	app.get('/upload', function(req,res) {
-		res.render('mng/upload');
+	app.all(process.env.VPATH + '/upload', function(req, res) {
+		var _rdata = pagedata.getData(req);
+		res.render('mng/upload', _rdata);
 	});
-	app.post('/upload', function(req, res) {
-		var form = new formidable.IncomingForm();
-		form.multiples = true;
-		form.maxFieldsSize = 2 * 1024 * 1024;
-		var uploadDir = './public/uploads';
-		var fs = require('fs');
-		if (!fs.existsSync(uploadDir))
-    		fs.mkdirSync(uploadDir);
-
-		form.uploadDir = uploadDir;
-		form.on('file', function(field, file) {
-            //rename the incoming file to the file's name
-            var _extArry = file.name.split(".");
-            var _extName = _extArry[_extArry.length-1];
-            var _newname = Date.now()+'-'+Math.round(Math.random()*100000)+'.'+_extName;
-            file._newname = _newname;
-            fs.rename(file.path, form.uploadDir + "/" + _newname);
-        });
-		form.on('progress', function(bytesReceived, bytesExpected) {
-			console.log(bytesReceived, bytesExpected);
-		});
-		form.parse(req, function(err, fields, files) {
-			if (err) {
-				console.log(err);
-				return res.redirect(303, '/error');
-			}
-
-			console.log('fields : ');
-			console.log(fields);
-			console.log('files : ');
-			console.log(files);
-			//res.redirect(303, '/done');
-			var data = [];
-			if (typeof files.file == "array") {
-				for (var i =0;i < files.file.length; i++) {
-					data.push({
-						'name':files[i].name,
-						'size':files[i].size,
-						'new_name':files[i]._newname
-					});
-				}
-			} else
-				data.push({
-					'name':files.file.name,
-					'size':files.file.size,
-					'new_name':files.file._newname
-				})
-			res.send(JSON.stringify(data));
-		});
+	app.all(process.env.VPATH + '/kindergarten', function(req, res) {
+		var _rdata = pagedata.getData(req);
+		_rdata.head.title = "台北市幼稚園地圖";
+		res.render('kindergarten', _rdata);
 	});
 
 	app.use(http500);
