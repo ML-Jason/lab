@@ -2,7 +2,28 @@ body, .swal2-modal{
 	font-family: "Helvetica Neue",Helvetica,"微軟正黑體",Arial,sans-serif;
 }
 
-/*修正右下角下拉選單在小螢幕時會超出畫面*/
+/*修正主選單右上方下拉次選單在小螢幕時會超出畫面的問題*/
 .navbar-top-links .dropdown-user {
 	left: 0;
+}
+
+/*修正列表頁頁數按鈕樣式錯誤的問題*/
+.btn-circle.btn-xs {
+    width: 20px;
+    height: 20px;
+    padding: 2px 0;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.428571429;
+}
+.pager li>a {
+    border-radius : 0;
+}
+.pagination { 
+    margin : 0;
+}
+.pager { 
+    margin-top : 0;
+    margin-bottom : 10;
 }

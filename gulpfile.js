@@ -11,6 +11,7 @@ const gulp = require('gulp'),
   colors = require('colors'),                         // console 換顏色
   base64 = require('gulp-base64'),                    // 圖片轉 base64 字串
   sass = require('gulp-sass'),                        // sass
+  cleanCSS = require('gulp-clean-css'),
   htmlmin = require('gulp-htmlmin'),                  // html 壓成一行
   cache = require('gulp-cache'),                      //
   autoprefixer = require('gulp-autoprefixer'),        // css autoprefixer
@@ -152,6 +153,7 @@ gulp.task('css', function() {
       gulp.src(_files)
           .pipe(gulpPlumber())
           .pipe(concat(ut.output_file))
+          //.pipe(cleanCSS({compatibility: 'ie8'}))
           .pipe(gulp.dest(ut.dist_dir))
           //.pipe( browserSync.stream() );
   });
