@@ -1,3 +1,8 @@
 body, .swal2-modal{
 	font-family: "Helvetica Neue",Helvetica,"微軟正黑體",Arial,sans-serif;
 }
+
+/*修正右下角下拉選單在小螢幕時會超出畫面*/
+.navbar-top-links .dropdown-user {
+	left: 0;
+}

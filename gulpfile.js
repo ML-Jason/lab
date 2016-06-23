@@ -47,6 +47,8 @@ var jsfiles_conf = [
           'bootstrap.min.js',
           'metisMenu.min.js',
           'sb-admin-2.js',
+          'bootstrap-datepicker.js',
+          'bootstrap-datepicker.zh-TW.min.js',
           'js.cookie.js',
           'tooltipster.bundle.min.js',
           'sweetalert2.min.js',
@@ -125,6 +127,7 @@ var cssfiles_conf = [
           'font-awesome.min.css',
           'metisMenu.min.css',
           'sb-admin-2.css',
+          'bootstrap-datepicker3.css',
           'sweetalert2.min.css',
           'tooltipster.bundle.min.css',
           'themes/tooltipster-sideTip-shadow.min.css',
@@ -152,8 +155,8 @@ gulp.task('css', function() {
           .pipe(gulp.dest(ut.dist_dir))
           //.pipe( browserSync.stream() );
   });
-  gulp.src('./src/css/lib/*.map')
-      .pipe(gulp.dest('./public/mng/css/'));
+  /*gulp.src('./src/css/lib/*.map')
+      .pipe(gulp.dest('./public/mng/css/'));*/
   gulp.src(['./src/**/*.css', '!./src/css/lib/**'])
       .pipe(gulpPlumber())
       .pipe(gulp.dest('./public/'));
