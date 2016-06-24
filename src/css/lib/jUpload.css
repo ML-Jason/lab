@@ -31,7 +31,7 @@
    	max-height: 90px;
 	min-height: 50px;
 	text-align: center;
-	line-height: 100px;
+	line-height: 90px;
 }
 .jfile_info {
    	width: 100%;
@@ -47,7 +47,7 @@
 	}
 }
 .jfile_thum  img {
-	max-height: 100px;
+	max-height: 90px;
 	max-width: 100px;
 	cursor: pointer;
 }

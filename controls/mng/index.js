@@ -5,15 +5,15 @@ var vpath = process.env.VPATH;
 
 module.exports = function(app) {
 	app.all(vpath + '/mng/*', function(req, res, next) {
-		var path = req.path;
+		var path = req.originalUrl;
 		if (path.indexOf(vpath + '/mng/login') >= 0) {
 			next();
 			return;
 		}
+		res.cookie('_path', path);
 		if (! secure.isLogin(req))
 			res.redirect(vpath + '/mng/login');
 		else {
-			res.cookie('_path', path);
 			next();
 		}
 	});
