@@ -6,6 +6,7 @@ module.exports = function(app) {
 	app.all(process.env.VPATH + '/api/tokensignin', tokensignin);
 
 	require('./upload.js')(app);
+	require('./cultural_activities_musical.js')(app);
 }
 
 function tokensignin(req, res) {
@@ -36,6 +37,7 @@ function tokensignin(req, res) {
 						secure.saveLogin(req, res, _logindata);
 						_obj = {'status':'OK', 'name':_data.name, 'email':_data.email, 'id':data._id};
 						res.send(JSON.stringify(_obj));
+						usersModel.updateLogindate({'_id':data._id});
 					} else {
 						_obj = {'status':'ERROR', 'message':'未知的錯誤'};
 						res.send(JSON.stringify(_obj));

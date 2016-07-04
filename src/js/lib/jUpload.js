@@ -69,6 +69,8 @@ jupload.add([
 		var _files;
 		var _imgExtends = "jpg,png,gif,jpeg,bmp";
 		var _eventListensers;
+		var _enterColor = "#A0A0A0";
+		var _leaveColor = "#808080";
 
 		if (typeof param == 'string')
             this.target = param;
@@ -76,6 +78,15 @@ jupload.add([
             for (var itm in param) {
                 this[itm] = param[itm];
             }
+
+        $(window).on("resize", onWindowResize);
+        function onWindowResize() {
+        	if ($(window).innerWidth() > 500) {
+        		$(".jfile_info").css("width", $(".jfile_unit").width() - $(".jfile_thum").width());
+        	} else {
+        		$(".jfile_info").css("width", "100%");
+        	}
+        };
 
 		this.init = function() {
 			_files = [];
@@ -90,15 +101,15 @@ jupload.add([
 
 			var filedrop = $(_this.target + " .jfile_box");
 			filedrop.on("click", _this.openFileDialog).on("mouseenter", function() {
-				$(_this.target + " .jfile_box").css({"border-color": "#0f3c4b"});
+				$(_this.target + " .jfile_box").css({"border-color": _enterColor});
 			}).on("mouseleave", function() {
-				$(_this.target + " .jfile_box").css({"border-color": "#92b0b3"});
+				$(_this.target + " .jfile_box").css({"border-color": _leaveColor});
 			});
             filedrop.on('dragenter', function (e) {
-                $(_this.target + " .jfile_box").css({"border-color": "#0f3c4b"});
+                $(_this.target + " .jfile_box").css({"border-color": _enterColor});
             });
             filedrop.on("dragleave", function(e) {
-            	$(_this.target + " .jfile_box").css({"border-color": "#92b0b3"});
+            	$(_this.target + " .jfile_box").css({"border-color": _leaveColor});
             });
             filedrop.on("dragover", function (e) {
                 e.preventDefault();
@@ -112,8 +123,11 @@ jupload.add([
 		this.openFileDialog = function() {
         	$(_this.target + " .jfile_file_btn").click();
         };
+        /*
+        檔案拖拉進來或是選取了檔案
+        */
 		function onFiles(e) {
-			$(_this.target + " .jfile_box").css({"border-color": "#92b0b3"});
+			$(_this.target + " .jfile_box").css({"border-color": _leaveColor});
 			var files;
 			if (e.originalEvent.dataTransfer)
 				files = e.originalEvent.dataTransfer.files;
@@ -123,6 +137,9 @@ jupload.add([
 
 			$(_this.target + " .jfile_file_btn").val('');
 		};
+		/*
+		加入已經上傳的檔案列表
+		*/
 		this.add = function(efiles) {
             for (var i = 0;i < efiles.length;i++) {
                 var _file = {
@@ -151,10 +168,14 @@ jupload.add([
                 $(".id_"+_file._id+" .progress-bar").removeClass("progress-bar-success").addClass("progress-bar-info");
                 $(".id_"+_file._id+" .progress").removeClass("active progress-striped").css("height",5);
             }
+            onWindowResize();
             var event = new Event('change');
             event.files = _files;
             _this.dispatchEvent(event);
         }
+        /*
+        將被選取的檔案放入列表
+        */
 		function addFiles(pfs) {
             var _wrong = [];
             for (var i = 0;i < pfs.length; i++){
@@ -203,6 +224,7 @@ jupload.add([
                     _file._show = true;
                 }
             }
+            onWindowResize();
             var event = new Event('change');
             event.files = _files;
             _this.dispatchEvent(event);

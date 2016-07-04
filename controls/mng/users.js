@@ -236,6 +236,11 @@ function modUserGet(req, res) {
 		_d.email = _ps.email || _d.email;
 		_d.nickname = _ps.nickname || _d.nickname;
 		_d.role = _ps.role || _d.role;
+		console.log(_ps.logindate);
+		if (_ps.logindate)
+			_d.logindate = new Date(_ps.logindate).toString();
+		else
+			_d.logindate = '';
 		_rdata.content = _d;
 		res.render('mng/users_add', _rdata);
 	});

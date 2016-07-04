@@ -58,13 +58,15 @@ jdrag.update();
 		}
 		function startDrag() {
 			_index = $(".dragunit").index(_draggedUnit);
-
+			var _margin_bottom = _draggedUnit.css("margin-bottom");
+			var _margin_top = _draggedUnit.css("margin-top");
 			var pos = _draggedUnit.position();
 			var offset = _draggedUnit.offset();
 			$('<div class="dragtmp dragunit"></div>').css({
 				"width":_draggedUnit.outerWidth(),
 				"height":_draggedUnit.outerHeight()
-			}).insertAfter(_draggedUnit).show();
+			}).insertAfter(_draggedUnit).show()
+			.css({"margin-bottom":_margin_bottom, "margin-top":_margin_top});
 
 			$('<div class="dragged"></div>').css({
 				"left":offset.left,
@@ -113,9 +115,11 @@ jdrag.update();
 						if (_nowY > _b) {
 							var _out = $(".dragtmp");
 							var _newtmp = _out.clone();
-							_out.removeClass("dragunit dragtmp").animate({"height":0}, function() {
-								_out.remove();
-							});
+							_out.removeClass("dragunit dragtmp")
+								.css({"margin-bottom":0, "margin-top":0, "height":_height-2})
+								.animate({"height":0}, function() {
+									_out.remove();
+								});
 							_newtmp.insertAfter(_u).css({
 								"height":0
 							}).animate({"height":_height});
@@ -126,9 +130,11 @@ jdrag.update();
 						if (_nowY < _b) {
 							var _out = $(".dragtmp");
 							var _newtmp = _out.clone();
-							_out.removeClass("dragunit dragtmp").animate({"height":0}, function() {
-								_out.remove();
-							});
+							_out.removeClass("dragunit dragtmp")
+								.css({"margin-bottom":0, "margin-top":0, "height":_height-2})
+								.animate({"height":0}, function() {
+									_out.remove();
+								});
 							_newtmp.insertBefore(_u).css({
 								"height":0
 							}).animate({"height":_height});

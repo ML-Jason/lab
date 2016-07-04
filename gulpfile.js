@@ -11,10 +11,8 @@ const gulp = require('gulp'),
   colors = require('colors'),                         // console 換顏色
   base64 = require('gulp-base64'),                    // 圖片轉 base64 字串
   sass = require('gulp-sass'),                        // sass
-  cleanCSS = require('gulp-clean-css'),
   htmlmin = require('gulp-htmlmin'),                  // html 壓成一行
   cache = require('gulp-cache'),                      //
-  autoprefixer = require('gulp-autoprefixer'),        // css autoprefixer
   concat = require('gulp-concat');                    // 合拼多個 js
 var browserSync = require('browser-sync').create();   // browserSync
 
@@ -81,7 +79,10 @@ var jsfiles_conf = [
   }
 ];
 gulp.task('js', function() {
-  taskLog('js');  
+  taskLog('js');
+  var options = {
+    preserveComments: 'license'
+  };
   var tasks = jsfiles_conf.map(function(ut) {
       var _files = [];
       for (var i = 0;i < ut.files.length; i++) {
@@ -92,7 +93,7 @@ gulp.task('js', function() {
           .pipe(gulpPlumber())
           .pipe(concat(ut.output_file))
           .pipe(sourcemaps.init())
-          .pipe(uglify())
+          .pipe(uglify(options))
           .pipe(gulp.dest(ut.dist_dir))
           .pipe(sourcemaps.write('./maps/js/'))
           .pipe(gulp.dest(ut.dist_dir));
@@ -102,7 +103,7 @@ gulp.task('js', function() {
       .pipe(gulpPlumber())
       .pipe(sourcemaps.init())
       .pipe(gulp.dest('./public/'))
-      .pipe(uglify())
+      .pipe(uglify(options))
       .pipe(sourcemaps.write('./js/maps'))
       .pipe(gulp.dest(function(file) {
           /*for (var itm in file) {
@@ -153,7 +154,6 @@ gulp.task('css', function() {
       gulp.src(_files)
           .pipe(gulpPlumber())
           .pipe(concat(ut.output_file))
-          //.pipe(cleanCSS({compatibility: 'ie8'}))
           .pipe(gulp.dest(ut.dist_dir))
           //.pipe( browserSync.stream() );
   });
@@ -227,13 +227,13 @@ gulp.task('html', function() {
 });
 
 /*
-████ ██     ██    ███     ██████   ████████ 
-██  ███   ███   ██ ██   ██    ██  ██       
-██  ████ ████  ██   ██  ██        ██       
-██  ██ ███ ██ ██     ██ ██   ████ ██████   
-██  ██     ██ █████████ ██    ██  ██       
-██  ██     ██ ██     ██ ██    ██  ██       
-████ ██     ██ ██     ██  ██████   ████████ 
+#### ##     ##    ###     ######   ########
+ ##  ###   ###   ## ##   ##    ##  ##
+ ##  #### ####  ##   ##  ##        ##
+ ##  ## ### ## ##     ## ##   #### ######
+ ##  ##     ## ######### ##    ##  ##
+ ##  ##     ## ##     ## ##    ##  ##
+#### ##     ## ##     ##  ######   ########
 */
 gulp.task( 'minijpg', function() {
   taskLog('minijpg');

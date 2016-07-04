@@ -10,7 +10,7 @@ locals.vpath = headdata.vpath || '';
 <meta property="og:site_name" content="<%=headdata.site_name || '' %>"/>
 <meta property="og:title" content="<%=headdata.title || '' %>"/>
 <meta property="og:image" content=""/>
-<meta property="og:type" content="article" />
+<meta property="og:type" content="<%=headdata.ogtype || 'article' %>" />
 <meta property="og:url" content="<%=headdata.url || '' %>" />
 <meta property="og:description" content=""/>
 <meta name="description" content=""/>

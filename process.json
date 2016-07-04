@@ -2,14 +2,13 @@
   "apps" : [{
     "name" : "Jason",
     "script" : "index.js",
+    //"instances"  : 4,
+    //"exec_mode"  : "cluster",
     "watch" : false,
     "ignore_watch" : ["node_modules", "dev", "public", ".git"],
     "env": {
-      "NODE_ENV": "development",
-    }/*,
-    "env_production" : {
-       "NODE_ENV": "production"
-    }*/
+      "NODE_ENV": "development", //production
+    }
   }/*,{
     "name"       : "api-app",
     "script"     : "api.js",
