@@ -13,7 +13,6 @@ const gulp = require('gulp'),
   sass = require('gulp-sass'),                        // sass
   htmlmin = require('gulp-htmlmin'),                  // html 壓成一行
   cache = require('gulp-cache'),                      //
-  autoprefixer = require('gulp-autoprefixer'),        // css autoprefixer
   concat = require('gulp-concat');                    // 合拼多個 js
 var browserSync = require('browser-sync').create();   // browserSync
 
@@ -47,6 +46,8 @@ var jsfiles_conf = [
           'bootstrap.min.js',
           'metisMenu.min.js',
           'sb-admin-2.js',
+          'bootstrap-datepicker.js',
+          'bootstrap-datepicker.zh-TW.min.js',
           'js.cookie.js',
           'tooltipster.bundle.min.js',
           'sweetalert2.min.js',
@@ -78,7 +79,10 @@ var jsfiles_conf = [
   }
 ];
 gulp.task('js', function() {
-  taskLog('js');  
+  taskLog('js');
+  var options = {
+    preserveComments: 'license'
+  };
   var tasks = jsfiles_conf.map(function(ut) {
       var _files = [];
       for (var i = 0;i < ut.files.length; i++) {
@@ -89,7 +93,7 @@ gulp.task('js', function() {
           .pipe(gulpPlumber())
           .pipe(concat(ut.output_file))
           .pipe(sourcemaps.init())
-          .pipe(uglify())
+          .pipe(uglify(options))
           .pipe(gulp.dest(ut.dist_dir))
           .pipe(sourcemaps.write('./maps/js/'))
           .pipe(gulp.dest(ut.dist_dir));
@@ -99,7 +103,7 @@ gulp.task('js', function() {
       .pipe(gulpPlumber())
       .pipe(sourcemaps.init())
       .pipe(gulp.dest('./public/'))
-      .pipe(uglify())
+      .pipe(uglify(options))
       .pipe(sourcemaps.write('./js/maps'))
       .pipe(gulp.dest(function(file) {
           /*for (var itm in file) {
@@ -125,6 +129,7 @@ var cssfiles_conf = [
           'font-awesome.min.css',
           'metisMenu.min.css',
           'sb-admin-2.css',
+          'bootstrap-datepicker3.css',
           'sweetalert2.min.css',
           'tooltipster.bundle.min.css',
           'themes/tooltipster-sideTip-shadow.min.css',
@@ -152,8 +157,8 @@ gulp.task('css', function() {
           .pipe(gulp.dest(ut.dist_dir))
           //.pipe( browserSync.stream() );
   });
-  gulp.src('./src/css/lib/*.map')
-      .pipe(gulp.dest('./public/mng/css/'));
+  /*gulp.src('./src/css/lib/*.map')
+      .pipe(gulp.dest('./public/mng/css/'));*/
   gulp.src(['./src/**/*.css', '!./src/css/lib/**'])
       .pipe(gulpPlumber())
       .pipe(gulp.dest('./public/'));
@@ -222,13 +227,13 @@ gulp.task('html', function() {
 });
 
 /*
-████ ██     ██    ███     ██████   ████████ 
-██  ███   ███   ██ ██   ██    ██  ██       
-██  ████ ████  ██   ██  ██        ██       
-██  ██ ███ ██ ██     ██ ██   ████ ██████   
-██  ██     ██ █████████ ██    ██  ██       
-██  ██     ██ ██     ██ ██    ██  ██       
-████ ██     ██ ██     ██  ██████   ████████ 
+#### ##     ##    ###     ######   ########
+ ##  ###   ###   ## ##   ##    ##  ##
+ ##  #### ####  ##   ##  ##        ##
+ ##  ## ### ## ##     ## ##   #### ######
+ ##  ##     ## ######### ##    ##  ##
+ ##  ##     ## ##     ## ##    ##  ##
+#### ##     ## ##     ##  ######   ########
 */
 gulp.task( 'minijpg', function() {
   taskLog('minijpg');

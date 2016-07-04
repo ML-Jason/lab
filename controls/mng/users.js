@@ -1,7 +1,6 @@
 var usersModel = require('../../models/users.js');
 var secure = require('../../lib/secure.js');
 var validator = require('validator');
-//var psession = require('../../lib/page_session.js');
 var pagedata = require('../../lib/pagedata.js');
 var vpath = process.env.VPATH;
 
@@ -87,9 +86,9 @@ function delUsers(req,res) {
 	}
 	usersModel.delById(req.body.uids, function(err, data) {
 		var _ps = {
-  			'alert' : { 'text': '刪除成功', 'type':'success' }
+  			'text': '刪除成功', 'type':'success'
   		}
-  		pagedata.setData(req, _ps);
+  		pagedata.setAlert(req, _ps);
 		res.redirect(vpath + '/mng/users');
 	});
 }
@@ -103,9 +102,9 @@ function deloneUser(req, res) {
 	var _id = req.params.id;
 	usersModel.delById([_id], function(err, data) {
 		var _ps = {
-  			'alert' : { 'text': '刪除成功', 'type':'success' }
+  			'text': '刪除成功', 'type':'success'
   		}
-  		pagedata.setData(req, _ps);
+  		pagedata.setAlert(req, _ps);
 		res.redirect(vpath + '/mng/users');
 	});
 }
@@ -237,6 +236,11 @@ function modUserGet(req, res) {
 		_d.email = _ps.email || _d.email;
 		_d.nickname = _ps.nickname || _d.nickname;
 		_d.role = _ps.role || _d.role;
+		console.log(_ps.logindate);
+		if (_ps.logindate)
+			_d.logindate = new Date(_ps.logindate).toString();
+		else
+			_d.logindate = '';
 		_rdata.content = _d;
 		res.render('mng/users_add', _rdata);
 	});

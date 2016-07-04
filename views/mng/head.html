@@ -2,12 +2,20 @@
 var headdata = (locals.head) ? locals.head : {};
 locals.vpath = headdata.vpath || '';
 %>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="">
-<meta name="author" content="">
+<meta charset="utf-8" />
+<!--<link rel="shortcut icon" type="image/png"  href="/icon/TO_180.png">-->
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="path" content="<%=vpath%>">
+<meta property="og:site_name" content="<%=headdata.site_name || '' %>"/>
+<meta property="og:title" content="<%=headdata.title || '' %>"/>
+<meta property="og:image" content=""/>
+<meta property="og:type" content="<%=headdata.ogtype || 'article' %>" />
+<meta property="og:url" content="<%=headdata.url || '' %>" />
+<meta property="og:description" content=""/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
 <title><%=headdata.title || '' %></title>
+<link rel="canonical" href="<%=headdata.url || '' %>" />
 <link href="<%=vpath%>/mng/css/common.css" rel="stylesheet">
 <script src="<%=vpath%>/mng/js/common.js"></script>

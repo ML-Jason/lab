@@ -2,7 +2,8 @@ var lobbyName = 'Lobby';
 var usersDic = {};
 
 module.exports = function(server) {
-	var io = require("socket.io")(server);
+	var io = require("socket.io")(server, { path: '/jason/socket.io'});
+	//var nsp = io.of('/jason/socket.io');
 
 	io.on('connection', function(socket){
 		usersDic[socket.id] = {

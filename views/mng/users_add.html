@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
 	<% include ./head.html %>
 	<style>
@@ -10,87 +9,76 @@
 			font-size: 16px;
 	}
 	</style>
-	
 </head>
 
 <body>
-	<div id="wrapper">
-		<% include ./nav.html %>
-		<!-- Page Content -->
-		<div id="page-wrapper">
-			<div class="container-fluid">
+	<% include ./nav.html %>
+	<div id="page-wrapper">
+		<div class="container-fluid">
+			<div class="col-sm-12 col-md-6 col-md-offset-3">
 				<div class="row">
-					<div class="row col-sm-12">
-						<h3 class="page-header">使用者管理</h1>
-					</div>
-
-					<!-- /.row -->
-					<div class="row">
-						<div class="col-sm-12 col-lg-8 col-lg-offset-2">
-							<div class="panel panel-default">
-								<div class="panel-heading"><strong>
-										<%=(content.mode == 'add') ? '新增使用者' : '修改使用者資料'%></strong>
-								</div>
-								<!-- panel-body -->
-								<div class="panel-body">
-									<form id="addform" method="post">
-										<input type="hidden" id="etype" value="<%=content.mode%>" />
-										<div class="form-group has-feedback email-group">
-											<label for="email" class="control-label"><span class="needs"> * </span>登入帳號</label>
-											<input type="text" class="form-control" id="email" name="email" placeholder="EMail" value="<%=content.email%>" <%=(content.mode!='add') ? 'readonly="readonly"' : ''%> >
-											<p class="help-block"><small>僅限米蘭的Email Address</small></p>
-										</div>
-										<div class="form-group has-feedback nickname-group"><!--has-error-->
-											<label for="nickname" class="control-label"><span class="needs"> * </span>NickName</label>
-											<input type="text" class="form-control" id="nickname" name="nickname" placeholder="NickName" value="<%=content.nickname%>" >
-											<!--<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>-->
-											<!--<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>-->
-											<p class="help-block"><small>就是暱稱</small></p>
-										</div>
-										<div class="form-group role-group">
-											<label for="role" class="control-label">權限</label>
-											<select class="form-control role-select" name="role">
-												<option value='member' <%=(content.role == 'member') ? 'selected' : ''%>>實驗室成員</option>
-												<option value='admin' <%=(content.role == 'admin') ? 'selected' : ''%>>管理者</option>
-											</select>
-											<p class="help-block"><small>管理者具有所有全部權限</small></p>
-										</div>
-										<div class="col-sm-12">
-											<div class="col-sm-2 col-xs-0"></div>
-											<div class="col-sm-4 col-xs-6">
-													<button type="submit" class="btn btn-success btn-block">Send</button>
-											</div>
-											<div class="col-sm-4 col-xs-6">
-													<button type="button" class="btn btn-default btn-block" id="back_btn">Back</button>
-											</div>
-										</div>
-									</form>
-								</div>
-								<!-- panel-body -->
-							</div>
-						</div>
-					</div>
-					<!-- /.row -->
+					<h3 class="page-header">使用者管理</h3>
 				</div>
+				<div class="row">						
+					<div class="panel panel-default">
+						<div class="panel-heading"><strong><%=(content.mode == 'add') ? '新增使用者' : '修改使用者資料'%></strong></div>
+						<!-- panel-body -->
+						<div class="panel-body">
+							<form id="addform" method="post">
+								<input type="hidden" id="etype" value="<%=content.mode%>" />
+								<div class="form-group has-feedback email-group">
+									<label for="email" class="control-label"><span class="needs"> * </span>登入帳號</label>
+									<input type="text" class="form-control" id="email" name="email" placeholder="EMail" value="<%=content.email%>" <%=(content.mode!='add') ? 'readonly="readonly"' : ''%> >
+									<p class="help-block"><small>僅限米蘭的Email Address</small></p>
+								</div>
+								<div class="form-group has-feedback nickname-group"><!--has-error-->
+									<label for="nickname" class="control-label"><span class="needs"> * </span>NickName</label>
+									<input type="text" class="form-control" id="nickname" name="nickname" placeholder="NickName" value="<%=content.nickname%>" >
+									<!--<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>-->
+									<!--<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>-->
+									<p class="help-block"><small>就是暱稱</small></p>
+								</div>
+								<div class="form-group role-group">
+									<label for="role" class="control-label">權限</label>
+									<select class="form-control role-select" name="role">
+										<option value='member' <%=(content.role == 'member') ? 'selected' : ''%>>實驗室成員</option>
+										<option value='admin' <%=(content.role == 'admin') ? 'selected' : ''%>>管理者</option>
+									</select>
+									<p class="help-block"><small>管理者具有所有全部權限</small></p>
+								</div>
+								<%
+								if (content.mode != 'add') {
+								%>
+								<div class="form-group role-group">
+									<label class="control-label">上次登入時間</label>
+									<p class="help-block"><small><%=content.logindate%></small></p>
+								</div>
+								<%
+								}
+								%>
+								<div class="col-sm-12">
+									<div class="col-sm-2 col-xs-0"></div>
+									<div class="col-sm-4 col-xs-6">
+											<button type="submit" class="btn btn-success btn-block">Send</button>
+									</div>
+									<div class="col-sm-4 col-xs-6">
+											<button type="button" class="btn btn-default btn-block" id="back_btn">Back</button>
+									</div>
+								</div>
+							</form>
+						</div>
+						<!-- panel-body -->
+					</div>
+				</div><!-- /.row -->
 			</div>
-			<!-- /.container-fluid -->
-		</div>
-		<!-- /#page-wrapper -->
-
-	</div>
-	<!-- /#wrapper -->
-
+		</div><!-- /.container-fluid -->
+	</div><!-- /#page-wrapper -->
 	<% include ./pagealert.html %>
 </body>
 
 </html>
 <script src="<%=vpath%>/mng/js/validators.js"></script>
 <script>
-window.onbeforeunload = function(e) {
-	//console.log(e);
-	//e.preventDefault();
-	//return 'haha';
-}
 $(onReady);
 function onReady() {
 	$("#addform").on("submit", onSubmit);
@@ -155,7 +143,7 @@ function onBack() {
 }
 function onClear() {
 	if ($("#etype").val() == "add")
-			$("#username").val("");
+		$("#username").val("");
 	$("#nickname").val("");
 	$("#password").val("");
 }

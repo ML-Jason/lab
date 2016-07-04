@@ -26,6 +26,9 @@
                                 </div>
                                 <!-- /.panel-heading -->
                                 <div class="panel-body">
+                                <div class="input-group date">
+                                    <input type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                </div>
                                 <form method="post">
                                     <textarea name="editor1" id="editor1" rows="10" cols="80">
                                         This is my textarea to be replaced with CKEditor.
@@ -52,6 +55,13 @@
 </html>
 <script src="<%=vpath%>/mng/ckeditor/ckeditor.js" ></script>
 <script>
+$('.input-group.date').datepicker({
+    'format' : 'yyyy/mm/dd',
+    'autoclose' : true,
+    'todayHighlight' : true,
+    'language' : 'zh-TW',
+    'zIndexOffset' : 1001
+});
 CKEDITOR.replace("editor1", {
     "enterMode" : CKEDITOR.ENTER_BR,
     "toolbarGroups" : [

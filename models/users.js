@@ -7,7 +7,7 @@ var userSchema = mongoose.Schema({
 	//pwd : String,
 	role : String,
 	//email : String,
-	logindate : Number,
+	logindate : Date,
 	createdate : { type: Date, default: Date.now }
 });
 var Users = mongoose.model('users', userSchema);
@@ -20,7 +20,7 @@ Users.auth = function(obj, cb) {
 
 //更新登入時間
 Users.updateLogindate = function(obj, cb) {
-	Users.update(obj, {$set: {logindate: Date.now()}}).exec(cb);
+	Users.update(obj, {$set: {logindate: new Date()}}).exec(cb);
 }
 //更新使用者資料
 Users.updateData = function(obj, newobj, cb) {

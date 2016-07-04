@@ -2,29 +2,7 @@
 <html lang="en">
 
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Socket Client</title>
-    <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <!-- MetisMenu CSS -->
-    <link href="css/metisMenu.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="css/sb-admin-2.css" rel="stylesheet">
-    <!-- Custom Fonts -->
-    <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <% include ./mng/head.html %>
     <style>
     	.msg_panel {
     		margin-top: 20px;
@@ -127,20 +105,9 @@
             </div>
         </div>
     </div>
-
-    
-
-    <!-- jQuery -->
-    <script src="js/jquery-1.12.1.min.js"></script>
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
-    <!-- Metis Menu Plugin JavaScript-->
-    <script src="js/metisMenu.min.js"></script>
-    <!-- Custom Theme JavaScript -->
-    <script src="js/sb-admin-2.js"></script>
 </body>
 </html>
-<script src="js/socket.io.js"></script>
+<script src="<%=vpath%>/js/sockets.js"></script>
 <script>
 $(onReady);
 
@@ -175,9 +142,9 @@ function onResize() {
         "height":$(window).height()/2 - 150
     });
 }
-var _url = "http://localhost:3000";
-var _socket = io(_url);
-//var _socket = io(_url, { path: '/jason/socket'});
+var _url = "http://localhost:3001";
+//var _socket = io(_url);
+var _socket = io(_url, { path: '/jason/socket.io'});
 _socket.on("connect", function() {
     var _room = _nowRoom;
     if (_room == '') _room = _defaultRoom;

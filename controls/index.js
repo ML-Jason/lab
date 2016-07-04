@@ -20,7 +20,14 @@ module.exports = function(app) {
 	app.all(process.env.VPATH + '/kindergarten', function(req, res) {
 		var _rdata = pagedata.getData(req);
 		_rdata.head.title = "台北市幼稚園地圖";
+		_rdata.head.ogtype = "website";
+		_rdata.head.url = "http://lab.medialand.com.tw/jason/kindergarten";
 		res.render('kindergarten', _rdata);
+	});
+	app.all(process.env.VPATH + '/sockettest', function(req, res) {
+		var _rdata = pagedata.getData(req);
+		_rdata.head.title = "Socket測試";
+		res.render('socket', _rdata);
 	});
 
 	app.use(http500);
