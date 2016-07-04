@@ -328,3 +328,10 @@ gulp.task('default', [
       'minipng',
       'copy_other_images'
   ]);
+
+/*var ejs = require('gulp-ejs');
+gulp.task('ejs', function() {
+	gulp.src('./views/mng/login.html')
+		.pipe(ejs({}))
+		.pipe(gulp.dest('./dist'));
+});*/
