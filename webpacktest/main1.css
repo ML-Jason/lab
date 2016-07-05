@@ -62,4 +62,71 @@
 }
 .jlightbox_title {
 	font-weight: bold;
+}body, .swal2-modal{
+	font-family: "Helvetica Neue",Helvetica,Arial,"Microsoft JhengHei",sans-serif;
+}
+
+.list_mainname_link {
+	color: black;
+	text-decoration: none;
+}
+.list_mainname_link:hover {
+	color: black;
+	text-decoration: underline;
+}
+
+/*修正主選單右上方下拉次選單在小螢幕時會超出畫面的問題*/
+.navbar-top-links .dropdown-user {
+	left: 0;
+}
+@media (min-width: 768px) {
+	.navbar-top-links .dropdown-user {
+		left: auto;
+		right: 0;
+	}	
+}
+
+/*修正列表頁頁數按鈕樣式錯誤的問題*/
+.btn-circle.btn-xs {
+    width: 20px;
+    height: 20px;
+    padding: 2px 0;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.428571429;
+}
+.pager li>a {
+    border-radius : 0;
+}
+.pagination { 
+    margin : 0;
+}
+.pager { 
+    margin-top : 0;
+    margin-bottom : 10;
+}
+
+/*設定列表頁表格裡checkbox及功能鍵的寬度*/
+.j_table_functions_th {
+    width : 70px; 
+    text-align : center
+}
+.j_table_checkbox_th {
+    width : 30px;
+}
+
+/*調整左方主選單的寬度*/
+@media (min-width: 768px) {
+	.sidebar {
+		width : 150px;
+	}
+	#page-wrapper {
+		margin : 0 0 0 150px;
+	}
+}
+
+/*把主要中心頁面寬度拉寬一點*/
+#page-wrapper {
+	padding: 0;
 }

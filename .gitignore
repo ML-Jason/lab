@@ -49,6 +49,7 @@ Temporary Items
 #node_modules
 node_modules
 public/uploads
+public/api_data
 
 #logs
 logs

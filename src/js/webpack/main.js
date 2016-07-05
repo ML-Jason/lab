@@ -7,7 +7,11 @@
 
 console.log($);
 require('jlightbox');
+require('../../css/lib/jlightbox.css');
+require('../../css/lib/global.css')
+require('../lib/pagealert.js');
 console.log(jLightBox.parse);
+console.log(pageAlert);
 
 (function(env) {
 	var a = require('./a.js');
