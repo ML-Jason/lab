@@ -58,4 +58,4 @@
     $(function() {
         pageAlert.checkOnPageLoad();
     });
-})(this);
+})(window);
